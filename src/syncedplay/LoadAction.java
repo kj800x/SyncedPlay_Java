@@ -17,12 +17,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 class LoadAction extends KevinBaseAction {
     String text;
+    Callback callback;
     
-    public LoadAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
+    public LoadAction(String text, ImageIcon icon, String desc, Integer mnemonic, Callback r) {
         super(text, icon, desc, mnemonic);
+        callback = r;
     }
-    public LoadAction(String text, String desc, Integer mnemonic) {
+    public LoadAction(String text, String desc, Integer mnemonic, Callback r) {
         super(text, desc, mnemonic);
+        callback = r;
     }
     
     @Override
@@ -37,8 +40,8 @@ class LoadAction extends KevinBaseAction {
 
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileopen.getSelectedFile();
-            text = readFile(file);
-            System.out.print(text);
+            callback.setArgs(file);
+            callback.run();
         }
     }   
     

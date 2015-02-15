@@ -1,9 +1,8 @@
 package syncedplay;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.TableColumn;
-
+import static syncedplay.LoadAction.readFile;
 
 public class SyncedPlay extends JFrame {
 
@@ -28,8 +27,7 @@ public class SyncedPlay extends JFrame {
         initUI();
     }
 
-    public final void initUI() {
-        
+    final void setLaF() {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -40,32 +38,44 @@ public class SyncedPlay extends JFrame {
             throw new ClassNotFoundException();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             try {
-            // Set System L&F
+                // Set System L&F
                 UIManager.setLookAndFeel(
-                    //"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-                    //UIManager.getCrossPlatformLookAndFeelClassName());
-                    UIManager.getSystemLookAndFeelClassName());
-            } 
-            catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException z) {
-               // handle exception
+                        //"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                        //UIManager.getCrossPlatformLookAndFeelClassName());
+                        UIManager.getSystemLookAndFeelClassName());
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException z) {
+                // handle exception
             }
         }
+    }
+
+    final void makeMenuBar() {
         JMenuBar menubar = new JMenuBar();
-         
+
         JMenu file = new JMenu("File");
         file.setMnemonic(KeyEvent.VK_F);
-        
+
         QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
         JMenuItem exitMenuItem = new JMenuItem(qa);
         file.add(exitMenuItem);
-        
-        LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E);
+
+        LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E, new Callback(){
+            @Override
+            public void run() {
+                Object[] args = getArgs();
+                String text = readFile((File) args[0]);
+                System.out.print(text);
+            }
+        });
         JMenuItem loadMenuItem = new JMenuItem(la);
         file.add(loadMenuItem);
-        
+
         menubar.add(file);
         setJMenuBar(menubar);
-        
+    }
+
+    final void makePanel() {
+
         JPanel basic = new JPanel();
         basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
         add(basic);
@@ -86,16 +96,24 @@ public class SyncedPlay extends JFrame {
         commandPromptText.setText("kevin@kevin-mint-devel ~ $");
         basic.add(commandPromptText);
         /*
-        JButton ok = new JButton("OK");
-        JButton close = new JButton("Close");
+         JButton ok = new JButton("OK");
+         JButton close = new JButton("Close");
 
-        basic.add(ok);
-        basic.add(Box.createRigidArea(new Dimension(5, 0)));
-        basic.add(close);
-        basic.add(Box.createRigidArea(new Dimension(15, 0)));
-*/
+         basic.add(ok);
+         basic.add(Box.createRigidArea(new Dimension(5, 0)));
+         basic.add(close);
+         basic.add(Box.createRigidArea(new Dimension(15, 0)));
+         */
         //basic.add(bottom);
         basic.add(Box.createRigidArea(new Dimension(0, 15)));
+    }
+
+    public final void initUI() {
+        setLaF();
+
+        makeMenuBar();
+
+        makePanel();
 
         setTitle("Synced Play");
         setSize(400, 400);
@@ -104,7 +122,6 @@ public class SyncedPlay extends JFrame {
     }
 
     public static void main(String[] args) {
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
