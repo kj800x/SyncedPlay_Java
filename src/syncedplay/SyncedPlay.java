@@ -1,16 +1,19 @@
 package syncedplay;
 
 import java.awt.Dimension;
-import javax.swing.BorderFactory;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.TableColumn;
 
 
 public class SyncedPlay extends JFrame {
@@ -20,39 +23,49 @@ public class SyncedPlay extends JFrame {
     }
 
     public final void initUI() {
+        
+        try {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            throw new ClassNotFoundException();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            try {
+            // Set System L&F
+                UIManager.setLookAndFeel(
+                    //"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                    //UIManager.getCrossPlatformLookAndFeelClassName());
+                    UIManager.getSystemLookAndFeelClassName());
+            } 
+            catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException z) {
+               // handle exception
+            }
+        }
 
+        
         JPanel basic = new JPanel();
         basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
         add(basic);
 
         basic.add(Box.createVerticalGlue());
 
-        //JPanel bottom = new JPanel();
-        //bottom.setAlignmentX(1f);
-        //bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
-
         JScrollPane cuesPane = new JScrollPane();
-        JTextArea cuesArea = new JTextArea();
+        String[] columnNames = {"id", "Description"};
+        String[][] data = {{"1", "Show Start"}, {"120", "Show End"}};
+        JTable cuesTable = new JTable(data, columnNames);
+        TableColumn column = cuesTable.getColumnModel().getColumn(0);
+        column.setMaxWidth(35);
 
-        cuesArea.setLineWrap(true);
-        cuesArea.setText(" 1: Cues");
-        cuesArea.setWrapStyleWord(true);
-        cuesArea.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-
-        cuesPane.getViewport().add(cuesArea);
+        cuesPane.getViewport().add(cuesTable);
         basic.add(cuesPane);
-        
-        JScrollPane commandPane = new JScrollPane();
-        JTextArea commandArea = new JTextArea();
 
-        commandArea.setLineWrap(true);
-        commandArea.setText("Command Line");
-        commandArea.setWrapStyleWord(true);
-        commandArea.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-
-        commandPane.getViewport().add(commandArea);
-        basic.add(commandPane);
-        
+        JTextField commandPromptText = new JTextField(20);
+        commandPromptText.setText("kevin@kevin-mint-devel ~ $");
+        basic.add(commandPromptText);
+        /*
         JButton ok = new JButton("OK");
         JButton close = new JButton("Close");
 
@@ -60,7 +73,7 @@ public class SyncedPlay extends JFrame {
         basic.add(Box.createRigidArea(new Dimension(5, 0)));
         basic.add(close);
         basic.add(Box.createRigidArea(new Dimension(15, 0)));
-
+*/
         //basic.add(bottom);
         basic.add(Box.createRigidArea(new Dimension(0, 15)));
 
@@ -73,7 +86,7 @@ public class SyncedPlay extends JFrame {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
-
+            @Override
             public void run() {
                 SyncedPlay mainWindow = new SyncedPlay();
                 mainWindow.setVisible(true);
