@@ -1,10 +1,16 @@
 package syncedplay;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -44,7 +50,18 @@ public class SyncedPlay extends JFrame {
                // handle exception
             }
         }
-
+        JMenuBar menubar = new JMenuBar();
+         
+        JMenu file = new JMenu("File");
+        file.setMnemonic(KeyEvent.VK_F);
+        
+        QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
+        
+        JMenuItem exitMenuItem = new JMenuItem(qa);
+        file.add(exitMenuItem);
+        menubar.add(file);
+        
+        setJMenuBar(menubar);
         
         JPanel basic = new JPanel();
         basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
