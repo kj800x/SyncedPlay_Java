@@ -56,11 +56,14 @@ public class SyncedPlay extends JFrame {
         file.setMnemonic(KeyEvent.VK_F);
         
         QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
-        
         JMenuItem exitMenuItem = new JMenuItem(qa);
         file.add(exitMenuItem);
-        menubar.add(file);
         
+        LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E);
+        JMenuItem loadMenuItem = new JMenuItem(la);
+        file.add(loadMenuItem);
+        
+        menubar.add(file);
         setJMenuBar(menubar);
         
         JPanel basic = new JPanel();
