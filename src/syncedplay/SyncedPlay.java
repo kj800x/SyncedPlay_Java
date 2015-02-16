@@ -1,6 +1,8 @@
 package syncedplay;
 
 import java.awt.Dimension;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
@@ -23,6 +25,8 @@ import static syncedplay.LoadAction.readFile;
 
 public class SyncedPlay extends JFrame {
 
+    SoundManager sm = new SoundManager();
+    
     public SyncedPlay() {
         initUI();
     }
@@ -59,12 +63,13 @@ public class SyncedPlay extends JFrame {
         JMenuItem exitMenuItem = new JMenuItem(qa);
         file.add(exitMenuItem);
 
-        LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E, new Callback(){
+        LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E, new Callback() {
             @Override
             public void run() {
                 Object[] args = getArgs();
-                String text = readFile((File) args[0]);
-                System.out.print(text);
+                sm.learnSound("knock", (File) args[0]);
+                //String text = readFile((File) args[0]);
+                //System.out.print(text);
             }
         });
         JMenuItem loadMenuItem = new JMenuItem(la);
@@ -107,6 +112,29 @@ public class SyncedPlay extends JFrame {
         //basic.add(bottom);
         basic.add(Box.createRigidArea(new Dimension(0, 15)));
     }
+    
+    final void setUpKeyCaptures(){
+        KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(final KeyEvent e) {
+                if (e.getID() == KeyEvent.KEY_TYPED) {
+                    if (e.getKeyChar() == '\t'){
+                        if ((e.getModifiers() & KeyEvent.SHIFT_MASK) == 0){
+                            System.out.println("Cue Forward");
+                        } else {
+                            System.out.println("Cue Back");
+                        }
+                    } else if (e.getKeyChar() == '\n') {
+                        System.out.println("Command Run");
+                        sm.playSound("knock");
+                    }
+                }
+                //Continue Propagation:
+                return false;
+            }
+        };
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+    }
 
     public final void initUI() {
         setLaF();
@@ -114,7 +142,9 @@ public class SyncedPlay extends JFrame {
         makeMenuBar();
 
         makePanel();
-
+        
+        setUpKeyCaptures();
+        
         setTitle("Synced Play");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
