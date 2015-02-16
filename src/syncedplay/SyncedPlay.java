@@ -5,6 +5,9 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -126,7 +129,11 @@ public class SyncedPlay extends JFrame {
                         }
                     } else if (e.getKeyChar() == '\n') {
                         System.out.println("Command Run");
-                        sm.playSound("knock");
+                        try {
+                            sm.playSound("knock");
+                        } catch (UnsupportedAudioFileException ex) {
+                            System.out.println("File is unsupported.");
+                        }
                     }
                 }
                 //Continue Propagation:
