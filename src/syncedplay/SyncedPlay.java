@@ -134,6 +134,12 @@ public class SyncedPlay extends JFrame {
                         } catch (UnsupportedAudioFileException ex) {
                             System.out.println("File is unsupported.");
                         }
+                    } else if (e.getKeyChar() == '>') {
+                        System.out.println("Step Forward");
+                        return true;
+                    } else if (e.getKeyChar() == '<') {
+                        System.out.println("Step Backwards");
+                        return true;
                     }
                 }
                 //Continue Propagation:
