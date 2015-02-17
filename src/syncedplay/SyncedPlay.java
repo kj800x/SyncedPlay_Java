@@ -23,14 +23,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.table.TableColumn;
-import static syncedplay.LoadAction.readFile;
 
 public class SyncedPlay extends JFrame {
 
-    SoundManager sm = new SoundManager();
+    SoundManager sm;
+    CueTableModel cueTableModel;
     
     public SyncedPlay() {
+        this.cueTableModel = new CueTableModel();
+        this.sm = new SoundManager();
         initUI();
     }
 
@@ -83,7 +84,6 @@ public class SyncedPlay extends JFrame {
     }
 
     final void makePanel() {
-
         JPanel basic = new JPanel();
         basic.setLayout(new BoxLayout(basic, BoxLayout.Y_AXIS));
         add(basic);
@@ -91,11 +91,13 @@ public class SyncedPlay extends JFrame {
         basic.add(Box.createVerticalGlue());
 
         JScrollPane cuesPane = new JScrollPane();
-        String[] columnNames = {"id", "Description"};
-        String[][] data = {{"1", "Show Start"}, {"120", "Show End"}};
-        JTable cuesTable = new JTable(data, columnNames);
-        TableColumn column = cuesTable.getColumnModel().getColumn(0);
-        column.setMaxWidth(35);
+        Cue[] cues = {
+            new Cue("Start Show"),
+            new Cue("End Show"),
+        };
+        cueTableModel.setCues(cues);
+        JTable cuesTable = new JTable(cueTableModel);
+        cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
 
         cuesPane.getViewport().add(cuesTable);
         basic.add(cuesPane);
@@ -103,16 +105,6 @@ public class SyncedPlay extends JFrame {
         JTextField commandPromptText = new JTextField(20);
         commandPromptText.setText("kevin@kevin-mint-devel ~ $");
         basic.add(commandPromptText);
-        /*
-         JButton ok = new JButton("OK");
-         JButton close = new JButton("Close");
-
-         basic.add(ok);
-         basic.add(Box.createRigidArea(new Dimension(5, 0)));
-         basic.add(close);
-         basic.add(Box.createRigidArea(new Dimension(15, 0)));
-         */
-        //basic.add(bottom);
         basic.add(Box.createRigidArea(new Dimension(0, 15)));
     }
     
@@ -127,6 +119,7 @@ public class SyncedPlay extends JFrame {
                         } else {
                             System.out.println("Cue Back");
                         }
+                        return true;
                     } else if (e.getKeyChar() == '\n') {
                         System.out.println("Command Run");
                         try {
@@ -134,6 +127,7 @@ public class SyncedPlay extends JFrame {
                         } catch (UnsupportedAudioFileException ex) {
                             System.out.println("File is unsupported.");
                         }
+                        return true;
                     } else if (e.getKeyChar() == '>') {
                         System.out.println("Step Forward");
                         return true;
