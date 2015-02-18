@@ -34,6 +34,8 @@ public class SyncedPlay extends JFrame {
     private SoundManager sm;
     private CueTableModel cueTableModel;
     
+    private StringBuilder currentSaveDirectory = new StringBuilder ();
+
     private Point contextClickPoint;
     private JTextField commandPromptText;
     private JTable cuesTable;
@@ -67,6 +69,19 @@ public class SyncedPlay extends JFrame {
             }
         }
     }
+    
+    final void loadFromDirectory(String directory) {
+        System.out.println("Loading from :" + directory);
+        currentSaveDirectory.delete(0, currentSaveDirectory.length());
+        currentSaveDirectory.append(directory);
+        
+    }
+    
+    final void saveToDirectory(String directory) {
+        System.out.println("Saving to :" + directory);
+        currentSaveDirectory.delete(0, currentSaveDirectory.length());
+        currentSaveDirectory.append(directory);
+    }
 
     final void makeMenuBar() {
         JMenuBar menubar = new JMenuBar();
@@ -78,11 +93,37 @@ public class SyncedPlay extends JFrame {
         JMenuItem exitMenuItem = new JMenuItem(qa);
         file.add(exitMenuItem);
 
+        SaveAction sa = new SaveAction("Save", "Saves a file", KeyEvent.VK_S, currentSaveDirectory, new Callback() {
+            @Override
+            public void run(){
+                Object[] args = getArgs();
+                saveToDirectory((String) args[0]);
+                //System.out.println((String) args[0]);
+                //TODO do stuff
+            }
+        });
+        JMenuItem saveMenuItem = new JMenuItem(sa);
+        file.add(saveMenuItem);
+        
+        ;
+        SaveAsAction saa = new SaveAsAction("Save as", "Saves a file", KeyEvent.VK_S, new Callback() {
+            @Override
+            public void run(){
+                Object[] args = getArgs();
+                saveToDirectory((String) args[0]);
+                //System.out.println((String) args[0]);
+                //TODO do stuff
+            }
+        });
+        JMenuItem saveAsMenuItem = new JMenuItem(saa);
+        file.add(saveAsMenuItem);
+        
         LoadAction la = new LoadAction("Open", "Loads a file", KeyEvent.VK_E, new Callback() {
             @Override
             public void run() {
                 Object[] args = getArgs();
-                sm.learnSound("knock", (File) args[0]);
+                loadFromDirectory((String) args[0]);
+                //sm.learnSound("knock", (File) args[0]);
                 //String text = readFile((File) args[0]);
                 //System.out.print(text);
             }
@@ -128,14 +169,16 @@ public class SyncedPlay extends JFrame {
         cueTableModel.setCues(cues);
         cuesTable = new JTable(cueTableModel);
         cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
+        cuesTable.getColumnModel().getColumn(1).setMaxWidth(10);
 
         cuesPane.getViewport().add(cuesTable);
         basic.add(cuesPane);
 
         commandPromptText = new JTextField(20);
+        commandPromptText.setMaximumSize( 
+            new Dimension(Integer.MAX_VALUE, commandPromptText.getPreferredSize().height) );
         commandPromptText.setText("");
         basic.add(commandPromptText);
-        basic.add(Box.createRigidArea(new Dimension(0, 15)));
     }
     
     final void setUpKeyCaptures(){
@@ -162,8 +205,20 @@ public class SyncedPlay extends JFrame {
                     if (e.getKeyChar() == '\t'){
                         if ((e.getModifiers() & KeyEvent.SHIFT_MASK) == 0){
                             System.out.println("Cue Forward");
-                        } else {
+                            if (cueTableModel.getRowCount() >= cueTableModel.getNextCueIndex()){
+                                Cue cueToRun = cueTableModel.getCue(cueTableModel.getNextCueIndex() - 1);
+                                System.out.println("Running Cue: "+ cueToRun.getDescription());
+                                if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()){
+                                    cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
+                                }
+                            }
+                       /* } else {
                             System.out.println("Cue Back");
+                            if (cueTableModel.getNextCueIndex() >= 1){
+                                Cue cueToRun = cueTableModel.getCue(cueTableModel.getNextCueIndex());
+                                System.out.println("Running Cue: "+ cueToRun.getDescription());
+                                cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
+                            }*/
                         }
                         return true;
                     } else if (e.getKeyChar() == '\n') {
@@ -177,9 +232,15 @@ public class SyncedPlay extends JFrame {
                         return true;
                     } else if (e.getKeyChar() == '>') {
                         System.out.println("Step Forward");
+                        if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()){
+                            cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
+                        }
                         return true;
                     } else if (e.getKeyChar() == '<') {
                         System.out.println("Step Backwards");
+                        if (cueTableModel.getNextCueIndex() >= 1){
+                            cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() - 1);
+                        }
                         return true;
                     }
                 }

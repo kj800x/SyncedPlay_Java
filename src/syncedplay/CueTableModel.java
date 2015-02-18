@@ -15,13 +15,16 @@ import javax.swing.table.AbstractTableModel;
 public class CueTableModel extends AbstractTableModel {
     
     private ArrayList<Cue> cues;
+    private int nextCue;
             
     CueTableModel(ArrayList<Cue> cues){
         this.cues = cues;
+        this.nextCue = 0;
     }      
     
     CueTableModel(){
         this.cues = new ArrayList();
+        this.nextCue = 0;
     }
     
     @Override
@@ -29,6 +32,8 @@ public class CueTableModel extends AbstractTableModel {
         if (col == 0){
             return "Cue";
         } else if (col == 1){
+            return "Next";
+        } else if (col == 2){
             return "Description";
         } else {
             return "!!ERROR!!";
@@ -37,15 +42,28 @@ public class CueTableModel extends AbstractTableModel {
     Cue getCue(int row){
         return cues.get(row);
     }
+    int getNextCueIndex(){
+        return nextCue + 1;
+    }
+    void setNextCueIndex(int next){
+        nextCue = next - 1;
+        fireTableDataChanged();
+    }
     @Override
     public int getRowCount() { return getCues().size(); }
     @Override
-    public int getColumnCount() { return 2; }
+    public int getColumnCount() { return 3; }
     @Override
     public Object getValueAt(int row, int col) {
         if (col == 0){
             return row;
         } else if (col == 1){
+            if (row == nextCue){
+                return ("*");
+            } else {
+                return (" ");
+            }
+        } else if (col == 2){
             return cues.get(row).getDescription();
         } else {
             return "!!ERROR!!";

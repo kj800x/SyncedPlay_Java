@@ -30,18 +30,12 @@ class LoadAction extends KevinBaseAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser fileopen = new JFileChooser();
-        FileFilter cueFilter = new FileNameExtensionFilter("Cue Files", "cue");
-        fileopen.addChoosableFileFilter(cueFilter);
-        FileFilter soundFilter = new FileNameExtensionFilter("Sound Files", "mp3");
-        fileopen.addChoosableFileFilter(soundFilter);
-        JPanel panel = new JPanel();
-        int ret = fileopen.showDialog(panel, "Open file");
-
-        if (ret == JFileChooser.APPROVE_OPTION) {
-            File file = fileopen.getSelectedFile();
-            callback.setArgs(file);
-            callback.run();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+          File file = fileChooser.getSelectedFile();
+          callback.setArgs(file.getAbsolutePath());
+          callback.run();
         }
     }   
     
