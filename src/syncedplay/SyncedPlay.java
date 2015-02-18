@@ -5,8 +5,7 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import javax.swing.Box;
@@ -91,10 +90,11 @@ public class SyncedPlay extends JFrame {
         basic.add(Box.createVerticalGlue());
 
         JScrollPane cuesPane = new JScrollPane();
-        Cue[] cues = {
-            new Cue("Start Show"),
-            new Cue("End Show"),
-        };
+        
+        ArrayList<Cue> cues = new ArrayList();
+        cues.add(new Cue("One"));
+        cues.add(new Cue("Two"));
+        cues.add(new Cue("Three"));
         cueTableModel.setCues(cues);
         JTable cuesTable = new JTable(cueTableModel);
         cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
@@ -122,11 +122,12 @@ public class SyncedPlay extends JFrame {
                         return true;
                     } else if (e.getKeyChar() == '\n') {
                         System.out.println("Command Run");
-                        try {
+                        cueTableModel.addCue(new Cue("Kevin"));
+                        /*try {
                             sm.playSound("knock");
                         } catch (UnsupportedAudioFileException ex) {
                             System.out.println("File is unsupported.");
-                        }
+                        }*/
                         return true;
                     } else if (e.getKeyChar() == '>') {
                         System.out.println("Step Forward");

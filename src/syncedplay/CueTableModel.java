@@ -5,6 +5,7 @@
  */
 package syncedplay;
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -13,13 +14,14 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CueTableModel extends AbstractTableModel {
     
-    private Cue[] cues = {};
+    private ArrayList<Cue> cues;
             
-    CueTableModel(Cue[] cues){
+    CueTableModel(ArrayList<Cue> cues){
         this.cues = cues;
     }      
     
     CueTableModel(){
+        this.cues = new ArrayList();
     }
     
     @Override
@@ -32,8 +34,11 @@ public class CueTableModel extends AbstractTableModel {
             return "!!ERROR!!";
         }
     }
+    Cue getCue(int row){
+        return cues.get(row);
+    }
     @Override
-    public int getRowCount() { return getCues().length; }
+    public int getRowCount() { return getCues().size(); }
     @Override
     public int getColumnCount() { return 2; }
     @Override
@@ -41,7 +46,7 @@ public class CueTableModel extends AbstractTableModel {
         if (col == 0){
             return row;
         } else if (col == 1){
-            return getCues()[col].getDescription();
+            return cues.get(row).getDescription();
         } else {
             return "!!ERROR!!";
         }
@@ -53,15 +58,20 @@ public class CueTableModel extends AbstractTableModel {
     /**
      * @return the cues
      */
-    Cue[] getCues() {
+    ArrayList<Cue> getCues() {
         return cues;
     }
 
     /**
      * @param cues the cues to set
      */
-    void setCues(Cue[] cues) {
+    void setCues(ArrayList<Cue> cues) {
         this.cues = cues;
+        fireTableDataChanged();
+    }
+    void addCue(Cue cue) {
+        this.cues.add(cue);
+        fireTableDataChanged();
     }
     
 }
