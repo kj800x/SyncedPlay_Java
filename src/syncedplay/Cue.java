@@ -48,5 +48,13 @@ class Cue {
         this.actions = actions;
     }
     
+    String getActionsText() {
+        StringBuilder out = new StringBuilder();
+        for (Action action : actions){
+            action.toString();
+        }
+        return out.toString();
+    }
+    
     
 }

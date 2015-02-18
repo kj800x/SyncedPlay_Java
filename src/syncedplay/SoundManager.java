@@ -23,6 +23,15 @@ class SoundManager {
     void learnSound(String key, File file) {
         keyToFile.put(key, file);
     }
+    
+    String save() {
+        StringBuilder out = new StringBuilder();
+        for (String key : keyToFile.keySet()){
+            out.append("[").append(key).append("]\n");
+            out.append(keyToFile.get(key).getName()).append("\n");
+        }
+        return out.toString();
+    }
 
     void playSound(final String key) throws UnsupportedAudioFileException {
 

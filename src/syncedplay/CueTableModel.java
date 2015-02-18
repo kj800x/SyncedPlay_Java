@@ -26,6 +26,15 @@ public class CueTableModel extends AbstractTableModel {
         this.nextCue = 0;
     }
     
+    String save() {
+        StringBuilder out = new StringBuilder();
+        for (Cue cue : cues){
+            out.append("[").append(cue.getDescription()).append("]\n");
+            out.append(cue.getActionsText()).append("\n");
+        }
+        return out.toString();
+    }
+    
     @Override
     public String getColumnName(int col) {
         if (col == 0){

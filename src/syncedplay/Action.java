@@ -10,4 +10,7 @@ package syncedplay;
  */
 abstract class Action {
     
+    @Override
+    public abstract String toString();
+    
 }

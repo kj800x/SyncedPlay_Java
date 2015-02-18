@@ -44,27 +44,24 @@ class LoadAction extends KevinBaseAction {
     }   
     
     static String readFile(File file) {
-
-        StringBuffer fileBuffer = null;
-        String fileString = null;
-        String line = null;
+        StringBuffer fileBuffer;
+        String fileString;
+        String line;
 
         try {
-            FileReader in = new FileReader(file);
-            BufferedReader brd = new BufferedReader(in);
-            fileBuffer = new StringBuffer();
-
-            while ((line = brd.readLine()) != null) {
-                fileBuffer.append(line).append(
-                        System.getProperty("line.separator"));
+            try (FileReader in = new FileReader(file)) {
+                BufferedReader brd = new BufferedReader(in);
+                fileBuffer = new StringBuffer();
+                
+                while ((line = brd.readLine()) != null) {
+                    fileBuffer.append(line).append(
+                            System.getProperty("line.separator"));
+                }
             }
-
-            in.close();
             fileString = fileBuffer.toString();
         } catch (IOException e) {
             return null;
         }
         return fileString;
     }
-
 }
