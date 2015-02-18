@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Kevin Johnson
+ * All rights reserved.
+ */
 package syncedplay;
 
 public abstract class Callback implements Runnable {

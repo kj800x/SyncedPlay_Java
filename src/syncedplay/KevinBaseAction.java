@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Kevin Johnson
+ * All rights reserved.
+ */
 package syncedplay;
 
 import static javax.swing.Action.MNEMONIC_KEY;

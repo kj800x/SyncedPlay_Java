@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Kevin Johnson
+ * All rights reserved.
+ */
 package syncedplay;
 
 import java.awt.Dimension;
@@ -31,10 +35,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class SyncedPlay extends JFrame {
 
-    private SoundManager sm;
-    private CueTableModel cueTableModel;
+    private final SoundManager sm;
+    private final CueTableModel cueTableModel;
     
-    private StringBuilder currentSaveDirectory = new StringBuilder ();
+    private final StringBuilder currentSaveDirectory = new StringBuilder ();
 
     private Point contextClickPoint;
     private JTextField commandPromptText;
