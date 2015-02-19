@@ -154,6 +154,14 @@ public class SyncedPlay extends JFrame {
 
         file.addSeparator();
 
+        QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
+        JMenuItem exitMenuItem = new JMenuItem(qa);
+        file.add(exitMenuItem);
+
+        menubar.add(file);
+        
+        JMenu sounds = new JMenu("Sounds");
+  
         ImportSoundAction importAction = new ImportSoundAction("Import Audio", "Imports an Audio File", KeyEvent.VK_I, new Callback() {
             @Override
             public void run() {
@@ -162,15 +170,23 @@ public class SyncedPlay extends JFrame {
             }
         });
         JMenuItem importActionMenuItem = new JMenuItem(importAction);
-        file.add(importActionMenuItem);
-
-        file.addSeparator();
-
-        QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
-        JMenuItem exitMenuItem = new JMenuItem(qa);
-        file.add(exitMenuItem);
-
-        menubar.add(file);
+        sounds.add(importActionMenuItem);
+        menubar.add(sounds);
+        
+        JMenu cues = new JMenu("Cues");
+        NewCueAction newCueAction = new NewCueAction("New Cue", "Creates a new cue", KeyEvent.VK_C, cueTableModel, new Callback() {
+            @Override
+            public void run() {
+                Object[] args = getArgs();
+                cueTableModel.addCue((Cue) args[0], (int) args[1]);
+//                soundTableModel.learnSound((String) args[0], (File) args[1]);
+            }
+        });
+        JMenuItem newCueActionMenuItem = new JMenuItem(newCueAction);
+        cues.add(newCueActionMenuItem);
+        
+        menubar.add(cues);
+        
         setJMenuBar(menubar);
     }
 
@@ -190,7 +206,6 @@ public class SyncedPlay extends JFrame {
 
         JMenuItem editCue = new JMenuItem("Edit");
         editCue.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = cuesTable.rowAtPoint(contextClickPoint);
@@ -200,14 +215,25 @@ public class SyncedPlay extends JFrame {
                 }
             }
         });
-
         cuesTablePMenu.add(editCue);
+        
+        JMenuItem deleteCue = new JMenuItem("Delete");
+        deleteCue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = cuesTable.rowAtPoint(contextClickPoint);
+                ConfirmDialog confirmDialog = new ConfirmDialog("Are you sure you want to delete this cue?");
+                if (confirmDialog.showOpenDialog() == EditCueDialog.APPROVE_OPTION) {
+                    System.out.println("Deleting " + row);
+                    cueTableModel.deleteCue(row);
+                }
+            }
+        });
+        cuesTablePMenu.add(deleteCue);
 
         soundsTablePMenu = new JPopupMenu();
-
         JMenuItem playSound = new JMenuItem("Play");
         playSound.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
@@ -215,8 +241,17 @@ public class SyncedPlay extends JFrame {
                 soundTableModel.playSound(soundTableModel.keyFromRow(row));
             }
         });
-
         soundsTablePMenu.add(playSound);
+        JMenuItem stopSound = new JMenuItem("Stop");
+        stopSound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
+                int row = soundsTable.rowAtPoint(contextClickPoint);
+                soundTableModel.stopSound(soundTableModel.keyFromRow(row));
+            }
+        });
+        soundsTablePMenu.add(stopSound);
     }
 
     final void makePanel() {
@@ -236,9 +271,9 @@ public class SyncedPlay extends JFrame {
 
         JScrollPane cuesPane = new JScrollPane();
         ArrayList<Cue> cues = new ArrayList();
-        cues.add(new Cue("One"));
-        cues.add(new Cue("Two"));
-        cues.add(new Cue("Three"));
+        //cues.add(new Cue("One"));
+        //cues.add(new Cue("Two"));
+        //cues.add(new Cue("Three"));
         cueTableModel.setCues(cues);
         cuesTable = new JTable(cueTableModel);
         cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
@@ -320,6 +355,7 @@ public class SyncedPlay extends JFrame {
                         for (Action action : actions) {
                             runAction(action);
                         }
+                        commandPromptText.setText("");
                     } else {
                         System.out.println("Cannot run command");
                     }

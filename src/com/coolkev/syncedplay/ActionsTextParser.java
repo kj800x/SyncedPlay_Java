@@ -28,8 +28,13 @@ public class ActionsTextParser {
                 } else {
                     throw new ParserException();
                 }
-            //case "":
-            //    break;
+            case "stop":
+                //Format: [stop, KEYWORD]
+                if (words.length == 2) { 
+                    return new StopSoundAction(words[1]);
+                } else {
+                    throw new ParserException();
+                }
         }
         //If we couldn't find a match
         throw new ParserException();

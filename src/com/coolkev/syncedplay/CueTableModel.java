@@ -100,8 +100,17 @@ public class CueTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
     
+    void deleteCue(int row) {
+        this.cues.remove(row);
+        fireTableDataChanged();
+    }
+    
     void addCue(Cue cue) {
-        this.cues.add(cue);
+        addCue(cue, this.cues.size());
+    }
+
+    void addCue(Cue cue, int before) {
+        this.cues.add(before, cue);
         fireTableDataChanged();
     }
     

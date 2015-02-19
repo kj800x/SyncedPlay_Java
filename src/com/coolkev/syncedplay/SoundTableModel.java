@@ -6,6 +6,10 @@ package com.coolkev.syncedplay;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,9 +29,12 @@ import javax.swing.table.AbstractTableModel;
 public class SoundTableModel extends AbstractTableModel {
     
     TreeMap<String, File> keyToFile = new TreeMap();
+    
+    TreeMap<String, ArrayList<Thread>> keyToThreads = new TreeMap();
 
     void learnSound(String key, File file) {
         keyToFile.put(key, file);
+        keyToThreads.put(key, new ArrayList<Thread>());
         fireTableDataChanged();
     }
     
@@ -36,6 +43,11 @@ public class SoundTableModel extends AbstractTableModel {
             PlaySoundAction psa = (PlaySoundAction) a;
             if (keyToFile.keySet().contains(psa.getKeyword())){
                 playSound(psa.getKeyword());
+            }
+        } else if (a instanceof StopSoundAction){
+            StopSoundAction ssa = (StopSoundAction) a;
+            if (keyToFile.keySet().contains(ssa.getKeyword())){
+                stopSound(ssa.getKeyword());
             }
         }
     }
@@ -62,6 +74,32 @@ public class SoundTableModel extends AbstractTableModel {
         return (String) getValueAt(row, 0);
     }
     
+    void stopSound(final String key){
+        cleanUpDeadThreads();
+        ArrayList<Thread> threadList = keyToThreads.get(key);
+        for (Thread thread : threadList){
+            thread.interrupt();
+        }
+        /*    for (Iterator<Thread> iterator = threadList.iterator(); iterator.hasNext();) {
+                Thread thread = iterator.next();
+                if (!thread.isAlive()) {
+                    iterator.remove();
+                }
+            }*/
+    }
+    
+    private void cleanUpDeadThreads(){
+        Set<String> keys = keyToThreads.keySet();
+        for (String key : keys){
+            ArrayList<Thread> threadList = keyToThreads.get(key);
+            for (Iterator<Thread> iterator = threadList.iterator(); iterator.hasNext();) {
+                Thread thread = iterator.next();
+                if (!thread.isAlive()) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
     
     //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
     void playSound(final String key) {
@@ -100,7 +138,7 @@ public class SoundTableModel extends AbstractTableModel {
                         clip.start();
                         listener.waitUntilDone();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(SoundTableModel.class.getName()).log(Level.SEVERE, null, ex);
+                        //Ok, we're being stopped;
                     } finally {
                         clip.close();
                     }
@@ -109,6 +147,7 @@ public class SoundTableModel extends AbstractTableModel {
                 }
             }
         });
+        keyToThreads.get(key).add(thread);
         thread.start();
     }
     
