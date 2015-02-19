@@ -85,6 +85,7 @@ class ImportAudioDialog extends JDialog {
         
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+        buttonsPanel.add(Box.createHorizontalGlue());
         JButton close = new JButton("Close");
         close.addActionListener(new ActionListener() {
             @Override
@@ -111,6 +112,7 @@ class ImportAudioDialog extends JDialog {
             }
         });
         buttonsPanel.add(approveOption);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
         
 

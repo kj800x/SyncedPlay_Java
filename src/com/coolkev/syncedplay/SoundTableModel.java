@@ -41,7 +41,6 @@ public class SoundTableModel extends AbstractTableModel {
     }
 
     void playSound(final String key) throws UnsupportedAudioFileException {
-
         Thread thread = new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.
