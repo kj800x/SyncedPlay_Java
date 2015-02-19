@@ -49,8 +49,8 @@ public class SyncedPlay extends JFrame {
     private JTextField commandPromptText;
     private JTable cuesTable;
     private JTable soundsTable;
-    private JPopupMenu tablePMenu;
-    private boolean handleKeys = true;
+    private JPopupMenu cuesTablePMenu;
+    private JPopupMenu soundsTablePMenu;
 
     public SyncedPlay() {
         this.cueTableModel = new CueTableModel();
@@ -175,9 +175,9 @@ public class SyncedPlay extends JFrame {
     }
 
     final void buildPopUpMenu() {
-        tablePMenu = new JPopupMenu();
+        cuesTablePMenu = new JPopupMenu();
 
-        JMenuItem editCue = new JMenuItem("Edit Cue");
+        JMenuItem editCue = new JMenuItem("Edit");
         editCue.addActionListener(new ActionListener() {
 
             @Override
@@ -189,7 +189,22 @@ public class SyncedPlay extends JFrame {
             }
         });
 
-        tablePMenu.add(editCue);
+        cuesTablePMenu.add(editCue);
+        
+        soundsTablePMenu = new JPopupMenu();
+
+        JMenuItem playSound = new JMenuItem("Play");
+        playSound.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
+                int row = soundsTable.rowAtPoint(contextClickPoint);
+                soundTableModel.playSound((String) soundTableModel.getValueAt(row, 0));
+            }
+        });
+
+        soundsTablePMenu.add(playSound);
     }
 
     final void makePanel() {
@@ -238,8 +253,7 @@ public class SyncedPlay extends JFrame {
                     System.out.println(description);
                 }
                 if (me.getButton() == MouseEvent.BUTTON3) {
-                    tablePMenu.show(me.getComponent(), me.getX(), me.getY());
-                    System.out.println(me.getComponent());
+                    cuesTablePMenu.show(me.getComponent(), me.getX(), me.getY());
                     contextClickPoint = p;
                 }
             }
@@ -255,8 +269,7 @@ public class SyncedPlay extends JFrame {
                     soundTableModel.playSound(key);
                 }
                 if (me.getButton() == MouseEvent.BUTTON3) {
-                    tablePMenu.show(me.getComponent(), me.getX(), me.getY());
-                    System.out.println(me.getComponent());
+                    soundsTablePMenu.show(me.getComponent(), me.getX(), me.getY());
                     contextClickPoint = p;
                 }
             }
