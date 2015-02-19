@@ -40,7 +40,18 @@ public class SoundTableModel extends AbstractTableModel {
         return out.toString();
     }
 
-    void playSound(final String key) throws UnsupportedAudioFileException {
+    static boolean isFileSupported(File f){
+        try {
+            AudioSystem.getAudioInputStream(f);
+            return true;
+        } catch (UnsupportedAudioFileException | IOException e) {
+            return false;
+        }
+    }
+    
+    
+    //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
+    void playSound(final String key) {
         Thread thread = new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.

@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
@@ -20,7 +21,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -50,6 +50,7 @@ public class SyncedPlay extends JFrame {
     private JTable cuesTable;
     private JTable soundsTable;
     private JPopupMenu tablePMenu;
+    private boolean handleKeys = true;
 
     public SyncedPlay() {
         this.cueTableModel = new CueTableModel();
@@ -238,61 +239,71 @@ public class SyncedPlay extends JFrame {
                 }
                 if (me.getButton() == MouseEvent.BUTTON3) {
                     tablePMenu.show(me.getComponent(), me.getX(), me.getY());
+                    System.out.println(me.getComponent());
                     contextClickPoint = p;
                 }
             }
         });
-        KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
+        soundsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public boolean dispatchKeyEvent(final KeyEvent e) {
-                if (e.getID() == KeyEvent.KEY_TYPED) {
-                    if (e.getKeyChar() == '\t') {
-                        if ((e.getModifiers() & KeyEvent.SHIFT_MASK) == 0) {
-                            System.out.println("Cue Forward");
-                            if (cueTableModel.getRowCount() >= cueTableModel.getNextCueIndex()) {
-                                Cue cueToRun = cueTableModel.getCue(cueTableModel.getNextCueIndex() - 1);
-                                System.out.println("Running Cue: " + cueToRun.getDescription());
-                                if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()) {
-                                    cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
-                                }
-                            }
-                            /* } else {
-                             System.out.println("Cue Back");
-                             if (cueTableModel.getNextCueIndex() >= 1){
-                             Cue cueToRun = cueTableModel.getCue(cueTableModel.getNextCueIndex());
-                             System.out.println("Running Cue: "+ cueToRun.getDescription());
-                             cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
-                             }*/
-                        }
-                        return true;
-                    } else if (e.getKeyChar() == '\n') {
-                        System.out.println("Command Run");
-                        cueTableModel.addCue(new Cue(commandPromptText.getText()));
-                        /*try {
-                         sm.playSound("knock");
-                         } catch (UnsupportedAudioFileException ex) {
-                         System.out.println("File is unsupported.");
-                         }*/
-                        return true;
-                    } else if (e.getKeyChar() == '>') {
-                        System.out.println("Step Forward");
-                        if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()) {
-                            cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
-                        }
-                        return true;
-                    } else if (e.getKeyChar() == '<') {
-                        System.out.println("Step Backwards");
-                        if (cueTableModel.getNextCueIndex() >= 1) {
-                            cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() - 1);
-                        }
-                        return true;
-                    }
+            public void mousePressed(MouseEvent me) {
+                JTable table = (JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    String key = (String) soundTableModel.getValueAt(row, 0);
+                    soundTableModel.playSound(key);
                 }
-                //Continue Propagation:
-                return false;
+                if (me.getButton() == MouseEvent.BUTTON3) {
+                    tablePMenu.show(me.getComponent(), me.getX(), me.getY());
+                    System.out.println(me.getComponent());
+                    contextClickPoint = p;
+                }
+            }
+        });
+        KeyListener kl = new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {}
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == '\t') {
+                    if ((e.getModifiers() & KeyEvent.SHIFT_MASK) == 0) {
+                        System.out.println("Cue Forward");
+                        if (cueTableModel.getRowCount() >= cueTableModel.getNextCueIndex()) {
+                            Cue cueToRun = cueTableModel.getCue(cueTableModel.getNextCueIndex() - 1);
+                            System.out.println("Running Cue: " + cueToRun.getDescription());
+                            if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()) {
+                                cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
+                            }
+                        }
+                    }
+                    e.consume();
+                } else if (e.getKeyChar() == '\n') {
+                    System.out.println("Command Run");
+                    cueTableModel.addCue(new Cue(commandPromptText.getText()));
+                    e.consume();
+                } else if (e.getKeyChar() == '>') {
+                    System.out.println("Step Forward");
+                    if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()) {
+                        cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
+                    }
+                    e.consume();
+                } else if (e.getKeyChar() == '<') {
+                    System.out.println("Step Backwards");
+                    if (cueTableModel.getNextCueIndex() >= 2) {
+                        cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() - 1);
+                    }
+                    e.consume();
+                }
             }
         };
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+        commandPromptText.addKeyListener(kl);
+        soundsTable.addKeyListener(kl);
+        cuesTable.addKeyListener(kl);
     }
 
     public final void initUI() {

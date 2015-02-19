@@ -18,6 +18,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 class ImportAudioDialog extends JDialog {
     
@@ -55,11 +57,20 @@ class ImportAudioDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent event) {
                 JFileChooser fileChooser = new JFileChooser();
+                FileFilter WAVaudioFilter = new FileNameExtensionFilter("WAV Audio Files", "wav");
+                FileFilter AUaudioFilter = new FileNameExtensionFilter("AU Audio Files", "au");
+                fileChooser.setFileFilter(AUaudioFilter);
+                fileChooser.setFileFilter(WAVaudioFilter);
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                   File file = fileChooser.getSelectedFile();
-                  selectedFile = file;
-                  fileNameLabel.setText(file.getName());
+                  if (SoundTableModel.isFileSupported(file)){
+                    selectedFile = file;
+                    fileNameLabel.setText(file.getName());
+                  } else {
+                    ErrorDialog ed = new ErrorDialog("The file is not in a known format!");
+                    ed.showOpenDialog();
+                  }
                 }
             }
         });
