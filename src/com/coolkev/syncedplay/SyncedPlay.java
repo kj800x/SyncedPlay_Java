@@ -200,7 +200,7 @@ public class SyncedPlay extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
                 int row = soundsTable.rowAtPoint(contextClickPoint);
-                soundTableModel.playSound((String) soundTableModel.getValueAt(row, 0));
+                soundTableModel.playSound(soundTableModel.keyFromRow(row));
             }
         });
 
@@ -265,7 +265,7 @@ public class SyncedPlay extends JFrame {
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
-                    String key = (String) soundTableModel.getValueAt(row, 0);
+                    String key = soundTableModel.keyFromRow(row);
                     soundTableModel.playSound(key);
                 }
                 if (me.getButton() == MouseEvent.BUTTON3) {

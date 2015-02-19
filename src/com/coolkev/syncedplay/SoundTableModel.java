@@ -49,6 +49,10 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
+    String keyFromRow(int row){
+        return (String) getValueAt(row, 0);
+    }
+    
     
     //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
     void playSound(final String key) {
