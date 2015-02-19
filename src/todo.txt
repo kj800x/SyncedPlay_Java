@@ -1,0 +1,9 @@
+ [ ] - Make Saving Work
+    [ ] - Copy the Audio Files
+    [ ] - Write the Text Files
+ [ ] - Make Loading Work
+ [ ] - Cue Swapping
+ [ ] - Dark Style
+ [ ] - Adjust Volume Level
+    [ ] - Fade In
+    [ ] - Fade Out
