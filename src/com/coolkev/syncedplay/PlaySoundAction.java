@@ -20,5 +20,15 @@ class PlaySoundAction extends Action {
     public String toString() {
         return "play " + key;
     }
+
+    @Override
+    public int handler() {
+        return Action.HANDLER_SOUND_SUBSYSTEM;
+    }
+    
+    public String getKeyword(){
+        return key;
+    }
+    
     
 }

@@ -31,6 +31,15 @@ public class SoundTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
     
+    void runAction(Action a){
+        if (a instanceof PlaySoundAction){
+            PlaySoundAction psa = (PlaySoundAction) a;
+            if (keyToFile.keySet().contains(psa.getKeyword())){
+                playSound(psa.getKeyword());
+            }
+        }
+    }
+    
     String save() {
         StringBuilder out = new StringBuilder();
         for (String key : keyToFile.keySet()){

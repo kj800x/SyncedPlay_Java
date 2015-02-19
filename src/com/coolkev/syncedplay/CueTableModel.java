@@ -95,6 +95,11 @@ public class CueTableModel extends AbstractTableModel {
         this.cues = cues;
         fireTableDataChanged();
     }
+    void setCue(int row, Cue cue) {
+        this.cues.set(row, cue);
+        fireTableDataChanged();
+    }
+    
     void addCue(Cue cue) {
         this.cues.add(cue);
         fireTableDataChanged();

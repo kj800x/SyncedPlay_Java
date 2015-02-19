@@ -51,7 +51,7 @@ class Cue {
     String getActionsText() {
         StringBuilder out = new StringBuilder();
         for (Action action : actions){
-            action.toString();
+            out.append(action.toString()).append("\n");
         }
         return out.toString();
     }

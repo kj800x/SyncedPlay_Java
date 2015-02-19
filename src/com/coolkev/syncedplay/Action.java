@@ -10,7 +10,12 @@ package com.coolkev.syncedplay;
  */
 abstract class Action {
     
+    public static final int HANDLER_CUE_SUBSYSTEM = 1;
+    public static final int HANDLER_SOUND_SUBSYSTEM = 2; 
+    
     @Override
     public abstract String toString();
+    
+    public abstract int handler();
     
 }

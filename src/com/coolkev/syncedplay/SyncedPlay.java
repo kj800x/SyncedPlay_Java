@@ -151,9 +151,9 @@ public class SyncedPlay extends JFrame {
         });
         JMenuItem loadMenuItem = new JMenuItem(la);
         file.add(loadMenuItem);
-        
+
         file.addSeparator();
-        
+
         ImportSoundAction importAction = new ImportSoundAction("Import Audio", "Imports an Audio File", KeyEvent.VK_I, new Callback() {
             @Override
             public void run() {
@@ -163,7 +163,7 @@ public class SyncedPlay extends JFrame {
         });
         JMenuItem importActionMenuItem = new JMenuItem(importAction);
         file.add(importActionMenuItem);
-        
+
         file.addSeparator();
 
         QuitAction qa = new QuitAction("Exit", "Closes the application", KeyEvent.VK_E);
@@ -174,6 +174,17 @@ public class SyncedPlay extends JFrame {
         setJMenuBar(menubar);
     }
 
+    final void runAction(Action a) {
+        switch (a.handler()) {
+//            case Action.HANDLER_CUE_SUBSYSTEM:
+//                cueTableModel.runAction(a);
+//                break;
+            case Action.HANDLER_SOUND_SUBSYSTEM:
+                soundTableModel.runAction(a);
+                break;
+        }
+    }
+
     final void buildPopUpMenu() {
         cuesTablePMenu = new JPopupMenu();
 
@@ -182,15 +193,16 @@ public class SyncedPlay extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
                 int row = cuesTable.rowAtPoint(contextClickPoint);
-                //System.out.println(pt);
-                System.out.println("Editing: " + cueTableModel.getCue(row).getDescription());
+                EditCueDialog ecd = new EditCueDialog(cueTableModel.getCue(row));
+                if (ecd.showOpenDialog() == EditCueDialog.APPROVE_OPTION) {
+                    cueTableModel.setCue(row, ecd.getCue());
+                }
             }
         });
 
         cuesTablePMenu.add(editCue);
-        
+
         soundsTablePMenu = new JPopupMenu();
 
         JMenuItem playSound = new JMenuItem("Play");
@@ -221,7 +233,7 @@ public class SyncedPlay extends JFrame {
         //soundsTable.getColumnModel().getColumn(1).setMaxWidth(20);
         soundsPane.getViewport().add(soundsTable);
         basic.add(soundsPane);
-        
+
         JScrollPane cuesPane = new JScrollPane();
         ArrayList<Cue> cues = new ArrayList();
         cues.add(new Cue("One"));
@@ -276,10 +288,12 @@ public class SyncedPlay extends JFrame {
         });
         KeyListener kl = new KeyListener() {
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+            }
 
             @Override
             public void keyTyped(KeyEvent e) {
@@ -292,12 +306,24 @@ public class SyncedPlay extends JFrame {
                             if (cueTableModel.getRowCount() > cueTableModel.getNextCueIndex()) {
                                 cueTableModel.setNextCueIndex(cueTableModel.getNextCueIndex() + 1);
                             }
+                            Action[] actions = cueToRun.getActions();
+                            for (Action action : actions) {
+                                runAction(action);
+                            }
                         }
                     }
                     e.consume();
                 } else if (e.getKeyChar() == '\n') {
                     System.out.println("Command Run");
-                    cueTableModel.addCue(new Cue(commandPromptText.getText()));
+                    if (ActionsTextParser.canParseText(commandPromptText.getText())) {
+                        Action[] actions = ActionsTextParser.parseText(commandPromptText.getText());
+                        for (Action action : actions) {
+                            runAction(action);
+                        }
+                    } else {
+                        System.out.println("Cannot run command");
+                    }
+                    //cueTableModel.addCue(new Cue());
                     e.consume();
                 } else if (e.getKeyChar() == '>') {
                     System.out.println("Step Forward");
@@ -350,7 +376,7 @@ public class SyncedPlay extends JFrame {
         Writer writer = null;
         try {
             writer = new BufferedWriter(new OutputStreamWriter(
-                                            new FileOutputStream(f), "utf-8"));
+                    new FileOutputStream(f), "utf-8"));
             writer.write(s);
         } catch (IOException ex) {
             // report
