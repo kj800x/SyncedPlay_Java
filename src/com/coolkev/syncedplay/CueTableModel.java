@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -114,4 +115,8 @@ public class CueTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
     
+    void swapCues(int rowOne, int rowTwo){
+        Collections.swap(this.cues, rowOne, rowTwo);
+        fireTableDataChanged();
+    }
 }

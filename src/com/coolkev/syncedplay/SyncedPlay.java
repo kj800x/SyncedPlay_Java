@@ -5,8 +5,6 @@
 package com.coolkev.syncedplay;
 
 import java.awt.Dimension;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -184,6 +182,9 @@ public class SyncedPlay extends JFrame {
         });
         JMenuItem newCueActionMenuItem = new JMenuItem(newCueAction);
         cues.add(newCueActionMenuItem);
+        SwapCueAction swapCueAction = new SwapCueAction("Swap Cue", "Swaps two cues", KeyEvent.VK_S, cueTableModel);
+        JMenuItem swapCueActionMenuItem = new JMenuItem(swapCueAction);
+        cues.add(swapCueActionMenuItem);
         
         menubar.add(cues);
         

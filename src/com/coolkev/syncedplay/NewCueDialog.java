@@ -133,7 +133,7 @@ class NewCueDialog extends JDialog {
         
 
         setModalityType(ModalityType.APPLICATION_MODAL);
-        setTitle("Import Sound");
+        setTitle("New Cue");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(300,250);
