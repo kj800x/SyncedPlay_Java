@@ -2,8 +2,9 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.util.Callback;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JFileChooser;

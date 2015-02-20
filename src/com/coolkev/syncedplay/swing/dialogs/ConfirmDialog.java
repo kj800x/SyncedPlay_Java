@@ -2,11 +2,12 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.dialogs;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-class ConfirmDialog extends JDialog {
+public class ConfirmDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
@@ -27,7 +28,7 @@ class ConfirmDialog extends JDialog {
         initUI(message);
     }
 
-    public final void initUI(String message) {
+    private final void initUI(String message) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -66,10 +67,11 @@ class ConfirmDialog extends JDialog {
         setTitle("Confirm Dialog");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(300,100);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        pack();
     }
     
-    int showOpenDialog() {
+    public int showDialog() {
         setVisible(true);
         return closeState;
     }

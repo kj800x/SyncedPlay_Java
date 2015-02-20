@@ -2,12 +2,13 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.dialogs;
 
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,14 +16,14 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
-class ErrorDialog extends JDialog {
+public class ErrorDialog extends JDialog {
     
     public ErrorDialog(String errorText) {
         super();
         initUI(errorText);
     }
 
-    public final void initUI(String errorText) {
+    private final void initUI(String errorText) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel(errorText);
@@ -34,7 +35,7 @@ class ErrorDialog extends JDialog {
         JButton close = new JButton("Close");
         close.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event) {;
+            public void actionPerformed(ActionEvent event) {
                 dispose();
             }
         });
@@ -44,10 +45,11 @@ class ErrorDialog extends JDialog {
         setTitle("Error");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(400,100);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        pack();
     }
     
-    void showOpenDialog() {
+    public void showDialog() {
         setVisible(true);
     }
 }

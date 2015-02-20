@@ -2,13 +2,15 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.model;
+
+import com.coolkev.syncedplay.action.Action;
 
 /**
  *
  * @author kevin
  */
-class Cue {
+public class Cue {
     private Action[] actions = {};
     private String description;
 
@@ -48,7 +50,7 @@ class Cue {
         this.actions = actions;
     }
     
-    String getActionsText() {
+    public String getActionsText() {
         StringBuilder out = new StringBuilder();
         for (Action action : actions){
             out.append(action.toString()).append("\n");

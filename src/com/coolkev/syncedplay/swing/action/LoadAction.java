@@ -2,8 +2,9 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.util.Callback;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author kevin
  */
-class LoadAction extends KevinBaseAction {
+public class LoadAction extends KevinBaseAction {
     String text;
     Callback callback;
     

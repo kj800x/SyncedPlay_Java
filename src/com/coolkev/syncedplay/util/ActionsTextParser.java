@@ -2,8 +2,11 @@
  * Copyright 2015 Kevin Johnson.
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.util;
 
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
+import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
 import java.util.ArrayList;
 
 
@@ -52,7 +55,7 @@ public class ActionsTextParser {
         return out.toArray(new Action[out.size()]);
     }
     
-    static boolean canParseText(String text){
+    public static boolean canParseText(String text){
         try {
             trulyParseText(text);
             return true;
@@ -60,7 +63,7 @@ public class ActionsTextParser {
             return false;
         }
     }
-    static Action[] parseText(String text){
+    public static Action[] parseText(String text){
         try {
             return trulyParseText(text);
         } catch (ParserException ex) {

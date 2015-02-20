@@ -2,8 +2,10 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.util.Callback;
+import com.coolkev.syncedplay.swing.dialogs.ImportAudioDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -12,7 +14,7 @@ import javax.swing.ImageIcon;
  *
  * @author kevin
  */
-class ImportSoundAction extends KevinBaseAction {
+public class ImportSoundAction extends KevinBaseAction {
     String text;
     Callback callback;
     
@@ -28,7 +30,7 @@ class ImportSoundAction extends KevinBaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         ImportAudioDialog iad = new ImportAudioDialog();
-        if (iad.showOpenDialog() == ImportAudioDialog.APPROVE_OPTION){
+        if (iad.showDialog() == ImportAudioDialog.APPROVE_OPTION){
             File file = iad.getFile();
             String key = iad.getKey(); 
             System.out.println(key);

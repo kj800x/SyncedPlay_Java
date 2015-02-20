@@ -4,7 +4,25 @@
  */
 package com.coolkev.syncedplay;
 
-import java.awt.Color;
+import com.coolkev.syncedplay.model.CueTableModel;
+import com.coolkev.syncedplay.model.Cue;
+import com.coolkev.syncedplay.model.SoundTableModel;
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.util.Callback;
+import com.coolkev.syncedplay.swing.action.QuitAction;
+import com.coolkev.syncedplay.swing.action.SwapCueAction;
+import com.coolkev.syncedplay.swing.action.SaveAction;
+import com.coolkev.syncedplay.swing.action.ImportSoundAction;
+import com.coolkev.syncedplay.swing.action.NewCueAction;
+import com.coolkev.syncedplay.swing.action.AboutBoxAction;
+import com.coolkev.syncedplay.swing.action.OnlineHelpAction;
+import com.coolkev.syncedplay.swing.action.SaveAsAction;
+import com.coolkev.syncedplay.swing.action.LoadAction;
+import com.coolkev.syncedplay.util.FileCopier;
+import com.coolkev.syncedplay.util.ActionsTextParser;
+import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
+import com.coolkev.syncedplay.swing.dialogs.EditCueDialog;
+import com.coolkev.syncedplay.swing.dialogs.ConfirmDialog;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -22,8 +40,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -98,7 +114,7 @@ public class SyncedPlay extends JFrame {
         File projectDataDir = new File(projectDataDirPath);
         if (!projectDataDir.exists()){
             ErrorDialog ed = new ErrorDialog("Project_Data folder doesn't exist. Loading failed!");
-            ed.showOpenDialog();
+            ed.showDialog();
             return;
         }
         System.out.println("Loading from :" + projectFile);
@@ -110,7 +126,7 @@ public class SyncedPlay extends JFrame {
             cueTableModel.load(cuesData);
         } else {
             ErrorDialog ed = new ErrorDialog("Couldn't load the cue file!");
-            ed.showOpenDialog();
+            ed.showDialog();
         }
         File soundsF = new File(projectDataDir.getAbsolutePath() + "/sounds.txt");
         if (soundsF.canRead()){
@@ -118,7 +134,7 @@ public class SyncedPlay extends JFrame {
             soundTableModel.load(soundsData, projectDataDir.getAbsolutePath());
         } else {
             ErrorDialog ed = new ErrorDialog("Couldn't load the sound file!");
-            ed.showOpenDialog();
+            ed.showDialog();
         }
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
         currentSaveDirectory.append(projectFile.getAbsolutePath());
@@ -276,7 +292,7 @@ public class SyncedPlay extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int row = cuesTable.rowAtPoint(contextClickPoint);
                 EditCueDialog ecd = new EditCueDialog(cueTableModel.getCue(row));
-                if (ecd.showOpenDialog() == EditCueDialog.APPROVE_OPTION) {
+                if (ecd.showDialog() == EditCueDialog.APPROVE_OPTION) {
                     cueTableModel.setCue(row, ecd.getCue());
                 }
             }
@@ -289,7 +305,7 @@ public class SyncedPlay extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int row = cuesTable.rowAtPoint(contextClickPoint);
                 ConfirmDialog confirmDialog = new ConfirmDialog("Are you sure you want to delete this cue?");
-                if (confirmDialog.showOpenDialog() == EditCueDialog.APPROVE_OPTION) {
+                if (confirmDialog.showDialog() == EditCueDialog.APPROVE_OPTION) {
                     System.out.println("Deleting " + row);
                     cueTableModel.deleteCue(row);
                 }

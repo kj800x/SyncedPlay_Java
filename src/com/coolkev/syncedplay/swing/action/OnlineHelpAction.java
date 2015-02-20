@@ -2,8 +2,9 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import javax.swing.ImageIcon;
  *
  * @author kevin
  */
-class OnlineHelpAction extends KevinBaseAction {
+public class OnlineHelpAction extends KevinBaseAction {
 
     public OnlineHelpAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
         super(text, icon, desc, mnemonic);
@@ -35,7 +36,7 @@ class OnlineHelpAction extends KevinBaseAction {
             } catch (IOException | URISyntaxException e) { /* TODO: error handling */ } 
         } else {
             ErrorDialog ed = new ErrorDialog("Navigate to http://redmondtheatretech.com/SyncedPlay/Help/ in your web browser.");
-            ed.showOpenDialog();
+            ed.showDialog();
         }   
     }
 

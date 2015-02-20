@@ -2,8 +2,12 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.model;
 
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
+import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
+import com.coolkev.syncedplay.util.IniFormatParser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +38,11 @@ public class SoundTableModel extends AbstractTableModel {
     
     TreeMap<String, ArrayList<Thread>> keyToThreads = new TreeMap();
 
-    void learnSound(String key, File file) {
+    public SoundTableModel(){
+        super();
+    }
+    
+    public void learnSound(String key, File file) {
         keyToFile.put(key, file);
         keyToThreads.put(key, new ArrayList<Thread>());
         fireTableDataChanged();
@@ -55,7 +63,7 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
-    void runAction(Action a){
+    public void runAction(Action a){
         if (a instanceof PlaySoundAction){
             PlaySoundAction psa = (PlaySoundAction) a;
             if (keyToFile.keySet().contains(psa.getKeyword())){
@@ -69,7 +77,7 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
-    String save() {
+    public String save() {
         StringBuilder out = new StringBuilder();
         for (String key : keyToFile.keySet()){
             out.append("[").append(key).append("]\n");
@@ -78,7 +86,7 @@ public class SoundTableModel extends AbstractTableModel {
         return out.toString();
     }
 
-    static boolean isFileSupported(File f){
+    public static boolean isFileSupported(File f){
         try {
             AudioSystem.getAudioInputStream(f);
             return true;
@@ -87,11 +95,11 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
-    String keyFromRow(int row){
+    public String keyFromRow(int row){
         return (String) getValueAt(row, 0);
     }
     
-    void stopSound(final String key){
+    public void stopSound(final String key){
         cleanUpDeadThreads();
         ArrayList<Thread> threadList = keyToThreads.get(key);
         for (Thread thread : threadList){
@@ -105,7 +113,7 @@ public class SoundTableModel extends AbstractTableModel {
             }*/
     }
     
-    void panic(){
+    public void panic(){
         Set<String> keys = keyToThreads.keySet();
         for (String key : keys){
             ArrayList<Thread> threadList = keyToThreads.get(key);
@@ -119,7 +127,7 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
-    File[] getFiles(){
+    public File[] getFiles(){
         return keyToFile.values().toArray(new File[keyToFile.values().size()]);
     }
     
@@ -137,7 +145,7 @@ public class SoundTableModel extends AbstractTableModel {
     }
     
     //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
-    void playSound(final String key) {
+    public void playSound(final String key) {
         Thread thread = new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.
@@ -184,10 +192,6 @@ public class SoundTableModel extends AbstractTableModel {
         });
         keyToThreads.get(key).add(thread);
         thread.start();
-    }
-    
-    SoundTableModel(){
-        super();
     }
     
     @Override

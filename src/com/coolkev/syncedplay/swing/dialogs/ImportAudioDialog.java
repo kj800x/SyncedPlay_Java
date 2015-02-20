@@ -2,13 +2,15 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.dialogs;
 
+import com.coolkev.syncedplay.model.SoundTableModel;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -21,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-class ImportAudioDialog extends JDialog {
+public class ImportAudioDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
@@ -37,7 +39,7 @@ class ImportAudioDialog extends JDialog {
         initUI();
     }
 
-    public final void initUI() {
+    private final void initUI() {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -69,7 +71,7 @@ class ImportAudioDialog extends JDialog {
                     fileNameLabel.setText(file.getName());
                   } else {
                     ErrorDialog ed = new ErrorDialog("The file is not in a known format!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                   }
                 }
             }
@@ -112,10 +114,10 @@ class ImportAudioDialog extends JDialog {
             public void actionPerformed(ActionEvent event) {
                 if (selectedFile == null){
                     ErrorDialog ed = new ErrorDialog("You must select a file!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else if (keyTextField.getText().length() == 0){
                     ErrorDialog ed = new ErrorDialog("You must provide a keyword!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
                     dispose();
@@ -131,19 +133,20 @@ class ImportAudioDialog extends JDialog {
         setTitle("Import Sound");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(300,180);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        pack();
     }
     
-    int showOpenDialog() {
+    public int showDialog() {
         setVisible(true);
         return closeState;
     }
     
-    File getFile() {
+    public File getFile() {
         return selectedFile;
     }
     
-    String getKey() {
+    public String getKey() {
         return keyTextField.getText();
     }
 }

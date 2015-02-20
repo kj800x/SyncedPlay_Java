@@ -2,7 +2,7 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.util;
 
 public abstract class Callback implements Runnable {
 

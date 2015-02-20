@@ -2,14 +2,16 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.dialogs;
 
+import com.coolkev.syncedplay.model.Cue;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-class SwapCueDialog extends JDialog {
+public class SwapCueDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
@@ -47,7 +49,7 @@ class SwapCueDialog extends JDialog {
         initUI();
     }
 
-    public final void initUI() {
+    private final void initUI() {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         //getContentPane()
         //        .setBorder(new EmptyBorder(10, 10, 10, 10) );
@@ -113,10 +115,10 @@ class SwapCueDialog extends JDialog {
             public void actionPerformed(ActionEvent event) {
                 if (firstPosition == defaultPosition || secondPosition == defaultPosition){
                     ErrorDialog ed = new ErrorDialog("You must select two cues!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else if (firstPosition == secondPosition){
                     ErrorDialog ed = new ErrorDialog("You must select two DIFFERENT cues!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
                     dispose();
@@ -132,19 +134,20 @@ class SwapCueDialog extends JDialog {
         setTitle("Swap Cues");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(300,250);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        pack();
     }
     
-    int showOpenDialog() {
+    public int showDialog() {
         setVisible(true);
         return closeState;
     }
     
-    int getSecondPosition() {
+    public int getSecondPosition() {
         return firstPosition;
     }
     
-    int getFirstPosition() {
+    public int getFirstPosition() {
         return secondPosition;
     }
 }

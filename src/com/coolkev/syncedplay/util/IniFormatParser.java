@@ -2,7 +2,7 @@
  * Copyright 2015 Kevin Johnson.
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.util;
 
 import java.util.LinkedHashMap;
 
@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
  *
  * @author kevin
  */
-class IniFormatParser {
-    static public LinkedHashMap<String, String> parseIniFormat(String s){
+public class IniFormatParser {
+    public static LinkedHashMap<String, String> parseIniFormat(String s){
         LinkedHashMap<String, String> out = new LinkedHashMap<>();
         StringBuilder sectionHead = new StringBuilder();
         StringBuilder sectionBody = new StringBuilder();

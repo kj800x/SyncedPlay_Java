@@ -2,8 +2,11 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.model.CueTableModel;
+import com.coolkev.syncedplay.swing.dialogs.ImportAudioDialog;
+import com.coolkev.syncedplay.swing.dialogs.SwapCueDialog;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -11,7 +14,7 @@ import javax.swing.ImageIcon;
  *
  * @author kevin
  */
-class SwapCueAction extends KevinBaseAction {
+public class SwapCueAction extends KevinBaseAction {
     String text;
     CueTableModel ctm;
     
@@ -27,7 +30,7 @@ class SwapCueAction extends KevinBaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         SwapCueDialog scd = new SwapCueDialog(ctm.getCues());
-        if (scd.showOpenDialog() == ImportAudioDialog.APPROVE_OPTION){
+        if (scd.showDialog() == ImportAudioDialog.APPROVE_OPTION){
             int first = scd.getFirstPosition();
             int second = scd.getSecondPosition();
             ctm.swapCues(first, second);

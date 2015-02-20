@@ -2,13 +2,15 @@
  * Copyright 2015 Kevin Johnson.
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.action.soundaction;
+
+import com.coolkev.syncedplay.action.Action;
 
 /**
  *
  * @author kevin
  */
-class StopSoundAction extends Action {
+public class StopSoundAction extends Action {
     
     private final String key;
     

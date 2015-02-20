@@ -2,12 +2,13 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.model;
 
+import com.coolkev.syncedplay.util.IniFormatParser;
+import com.coolkev.syncedplay.util.ActionsTextParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -19,17 +20,17 @@ public class CueTableModel extends AbstractTableModel {
     private ArrayList<Cue> cues;
     private int nextCue;
             
-    CueTableModel(ArrayList<Cue> cues){
+    public CueTableModel(ArrayList<Cue> cues){
         this.cues = cues;
         this.nextCue = 0;
     }      
     
-    CueTableModel(){
+    public CueTableModel(){
         this.cues = new ArrayList();
         this.nextCue = 0;
     }
     
-    String save() {
+    public String save() {
         StringBuilder out = new StringBuilder();
         for (Cue cue : cues){
             out.append("[").append(cue.getDescription()).append("]\n");
@@ -65,13 +66,13 @@ public class CueTableModel extends AbstractTableModel {
             return "!!ERROR!!";
         }
     }
-    Cue getCue(int row){
+    public Cue getCue(int row){
         return cues.get(row);
     }
-    int getNextCueIndex(){
+    public int getNextCueIndex(){
         return nextCue + 1;
     }
-    void setNextCueIndex(int next){
+    public void setNextCueIndex(int next){
         nextCue = next - 1;
         fireTableDataChanged();
     }
@@ -102,39 +103,39 @@ public class CueTableModel extends AbstractTableModel {
     /**
      * @return the cues
      */
-    ArrayList<Cue> getCues() {
+    public ArrayList<Cue> getCues() {
         return cues;
     }
 
     /**
      * @param cues the cues to set
      */
-    void setCues(ArrayList<Cue> cues) {
+    public void setCues(ArrayList<Cue> cues) {
         this.cues = cues;
         fireTableDataChanged();
     }
-    void setCue(int row, Cue cue) {
+    public void setCue(int row, Cue cue) {
         this.cues.set(row, cue);
         fireTableDataChanged();
     }
     
-    void deleteCue(int row) {
+    public void deleteCue(int row) {
         this.cues.remove(row);
         fireTableDataChanged();
     }
     
-    void addCue(Cue cue) {
+    public void addCue(Cue cue) {
         addCue(cue, this.cues.size());
     }
 
-    void addCue(Cue cue, int before) {
+    public void addCue(Cue cue, int before) {
         System.out.println(before);
         System.out.println(this.cues);
         this.cues.add(before, cue);
         fireTableDataChanged();
     }
     
-    void swapCues(int rowOne, int rowTwo){
+    public void swapCues(int rowOne, int rowTwo){
         Collections.swap(this.cues, rowOne, rowTwo);
         fireTableDataChanged();
     }

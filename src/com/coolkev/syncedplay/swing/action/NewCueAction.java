@@ -2,8 +2,14 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.util.Callback;
+import com.coolkev.syncedplay.model.Cue;
+import com.coolkev.syncedplay.model.CueTableModel;
+import com.coolkev.syncedplay.swing.dialogs.NewCueDialog;
+import com.coolkev.syncedplay.swing.dialogs.ImportAudioDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ import javax.swing.ImageIcon;
  *
  * @author kevin
  */
-class NewCueAction extends KevinBaseAction {
+public class NewCueAction extends KevinBaseAction {
     String text;
     Callback callback;
     CueTableModel ctm;
@@ -32,7 +38,7 @@ class NewCueAction extends KevinBaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         NewCueDialog ncd = new NewCueDialog(ctm.getCues());
-        if (ncd.showOpenDialog() == ImportAudioDialog.APPROVE_OPTION){
+        if (ncd.showDialog() == ImportAudioDialog.APPROVE_OPTION){
             String description = ncd.getDescription();
             Action[] actions = ncd.getActions(); 
             int beforeWhat = ncd.getPosition();

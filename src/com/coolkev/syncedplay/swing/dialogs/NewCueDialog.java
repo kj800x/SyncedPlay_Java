@@ -2,30 +2,29 @@
  * Copyright 2015 Kevin Johnson
  * All rights reserved.
  */
-package com.coolkev.syncedplay;
+package com.coolkev.syncedplay.swing.dialogs;
 
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.util.ActionsTextParser;
+import com.coolkev.syncedplay.model.Cue;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-class NewCueDialog extends JDialog {
+public class NewCueDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
@@ -51,7 +50,7 @@ class NewCueDialog extends JDialog {
         initUI(cues);
     }
 
-    public final void initUI(ArrayList<Cue> cues) {
+    private final void initUI(ArrayList<Cue> cues) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -67,6 +66,8 @@ class NewCueDialog extends JDialog {
         descPanel.add(new JLabel("Description: "));
         descPanel.add(Box.createRigidArea(new Dimension(7, 0)));
         descTextField = new JTextField("");
+        descTextField.setColumns(15);
+        descTextField.setMinimumSize(descTextField.getPreferredSize());
         descTextField.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, descTextField.getPreferredSize().height));
         descPanel.add(descTextField);
@@ -79,6 +80,8 @@ class NewCueDialog extends JDialog {
         actionsPanel.add(new JLabel("Actions: "));
         actionsPanel.add(Box.createRigidArea(new Dimension(7, 0)));
         actionsTextArea = new JTextArea("");
+        actionsTextArea.setRows(2);
+        actionsTextArea.setMinimumSize(actionsTextArea.getPreferredSize());
         actionsPanel.add(actionsTextArea);
         add(actionsPanel);
         
@@ -120,10 +123,10 @@ class NewCueDialog extends JDialog {
             public void actionPerformed(ActionEvent event) {
                 if (!ActionsTextParser.canParseText(actionsTextArea.getText())){
                     ErrorDialog ed = new ErrorDialog("The actions are not valid!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else if (descTextField.getText().length() == 0){
                     ErrorDialog ed = new ErrorDialog("You must provide a description!");
-                    ed.showOpenDialog();
+                    ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
                     dispose();
@@ -139,23 +142,24 @@ class NewCueDialog extends JDialog {
         setTitle("New Cue");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(300,250);
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        pack();
     }
     
-    int showOpenDialog() {
+    public int showDialog() {
         setVisible(true);
         return closeState;
     }
     
-    int getPosition() {
+    public int getPosition() {
         return insertAfter;
     }
     
-    Action[] getActions() {
+    public Action[] getActions() {
         return ActionsTextParser.parseText(actionsTextArea.getText());
     }
     
-    String getDescription() {
+    public String getDescription() {
         return descTextField.getText();
     }
 }
