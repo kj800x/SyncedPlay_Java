@@ -11,8 +11,6 @@ import com.coolkev.syncedplay.model.CueTableModel;
 import com.coolkev.syncedplay.swing.dialogs.NewCueDialog;
 import com.coolkev.syncedplay.swing.dialogs.ImportAudioDialog;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
