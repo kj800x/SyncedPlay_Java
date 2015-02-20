@@ -82,7 +82,7 @@ public class CueTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int col) {
         if (col == 0){
-            return row;
+            return row + 1;
         } else if (col == 1){
             if (row == nextCue){
                 return ("*");
