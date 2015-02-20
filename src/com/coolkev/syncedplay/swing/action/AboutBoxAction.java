@@ -4,6 +4,7 @@
  */
 package com.coolkev.syncedplay.swing.action;
 
+import com.coolkev.syncedplay.swing.dialogs.AboutDialog;
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -29,8 +30,8 @@ public class AboutBoxAction extends KevinBaseAction {
 
     @Override
     public void actionPerformed(ActionEvent q) {
-        ErrorDialog ed = new ErrorDialog("Synced Play. (copy) 2015 Kevin Johnson. Version Before 1", parent);
-        ed.showDialog();
+        AboutDialog ad = new AboutDialog("Synced Play", "© 2015 Kevin Johnson", "Don't have a version yet", parent);
+        ad.showDialog();
     }
 
 }

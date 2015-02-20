@@ -18,6 +18,7 @@ import com.coolkev.syncedplay.swing.action.AboutBoxAction;
 import com.coolkev.syncedplay.swing.action.OnlineHelpAction;
 import com.coolkev.syncedplay.swing.action.SaveAsAction;
 import com.coolkev.syncedplay.swing.action.LoadAction;
+import com.coolkev.syncedplay.swing.action.MoveCueAction;
 import com.coolkev.syncedplay.util.FileCopier;
 import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
@@ -252,9 +253,15 @@ public class SyncedPlay extends JFrame {
         }, this);
         JMenuItem newCueActionMenuItem = new JMenuItem(newCueAction);
         cues.add(newCueActionMenuItem);
+        
+        /*MoveCueAction moveCueAction = new MoveCueAction("Move Cue", "Move a cue", KeyEvent.VK_M, cueTableModel, this);
+        JMenuItem moveCueActionMenuItem = new JMenuItem(moveCueAction);
+        cues.add(moveCueActionMenuItem);*/
+        
         SwapCueAction swapCueAction = new SwapCueAction("Swap Cue", "Swaps two cues", KeyEvent.VK_S, cueTableModel, this);
         JMenuItem swapCueActionMenuItem = new JMenuItem(swapCueAction);
         cues.add(swapCueActionMenuItem);
+        
         
         menubar.add(cues);
         

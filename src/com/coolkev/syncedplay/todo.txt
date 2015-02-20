@@ -2,11 +2,9 @@
     [X] - Copy the Audio Files
     [x] - Write the Text Files
  [ ] - Write the Online Help Documents
- [ ] - Make the Error Dialog look more errorish
- [ ] - Make the Dialogs expand to fit their contents
- [ ] - Make a dedicated About Dialog
+ [x] - Make the Dialogs expand to fit their contents
+ [x] - Make a dedicated About Dialog
  [x] - Make Loading Work
- [?] - Use something other than null for setParentElement;
  [x] - Cue Swapping
  [x] - Save and load should pop up GUI dialogs that make more sense.
  [x] - Create new cue <INSERT BEFORE> should be end of show by default
@@ -14,8 +12,14 @@
  [x] - Create new cue <IMPORT!> should be <CREATE!>
  [x] - Cue table numbers should start at 1
  [ ] - Dark Style
-    [x] - Find something awesome that will totaly help with this
+    [x] - Find something awesome that will totally help with this
  [ ] - Looping
  [ ] - Adjust Volume Level
     [ ] - Fade In
     [ ] - Fade Out
+
+
+ [ ] - Later
+    [ ] - Cue Moving
+    [?] - Use something other than null for setParentElement;
+    [ ] - Make the Error Dialog look more errorish

@@ -21,29 +21,33 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class SwapCueDialog extends JDialog {
+public class MoveCueDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
     private int closeState = 0;
     
-    String[] cueNames;
-    private int firstPosition;
-    private int secondPosition;
+    String[] selectableCueNames;
+    String[] destinationCuePlaces;
+    private int selectedCueIndex;
+    private int destinationIndex;
     private final int defaultPosition;
     
-    public SwapCueDialog(ArrayList<Cue> cues, final Component parent) {
+    public MoveCueDialog(ArrayList<Cue> cues, final Component parent) {
         super();
         
-        cueNames = new String[cues.size() + 1];
+        selectableCueNames = new String[cues.size() + 1];
+        destinationCuePlaces = new String[cues.size() + 1];
         int i = 0;
         for (Cue cue : cues){
-            cueNames[i] = cue.getDescription();
+            selectableCueNames[i] = cue.getDescription();
+            destinationCuePlaces[i] = "Before \"" + cue.getDescription() + "\"";
             i++;
         }
-        cueNames[i] = "<Select a Cue>";
-        secondPosition = i;
-        firstPosition = i;
+        selectableCueNames[i] = "<Select a Cue>";
+        destinationCuePlaces[i] = "<To The End>";
+        selectedCueIndex = i;
+        destinationIndex = i;
         defaultPosition = i;
         
         initUI(parent);
@@ -56,7 +60,7 @@ public class SwapCueDialog extends JDialog {
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel label = new JLabel("Swap cues");
+        JLabel label = new JLabel("Move cue");
         label.setAlignmentX(0.5f);
         add(label);
         
@@ -64,15 +68,15 @@ public class SwapCueDialog extends JDialog {
         
         JPanel firstPanel = new JPanel();
         firstPanel.setLayout(new BoxLayout(firstPanel, BoxLayout.X_AXIS));
-        firstPanel.add(new JLabel("Swap cue: "));
+        firstPanel.add(new JLabel("Move cue: "));
         firstPanel.add(Box.createRigidArea(new Dimension(7, 0)));
-        JComboBox firstBox = new JComboBox<>(cueNames);
+        JComboBox firstBox = new JComboBox<>(selectableCueNames);
         firstBox.setSelectedItem("<Select a Cue>");
         firstBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 //e.getItem();
-                firstPosition = java.util.Arrays.asList(cueNames).indexOf(e.getItem());
+                selectedCueIndex = java.util.Arrays.asList(selectableCueNames).indexOf(e.getItem());
             }
         });
         firstPanel.add(firstBox);
@@ -83,13 +87,13 @@ public class SwapCueDialog extends JDialog {
         secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.X_AXIS));
         secondPanel.add(new JLabel("with cue: "));
         secondPanel.add(Box.createRigidArea(new Dimension(7, 0)));
-        JComboBox secondBox = new JComboBox<>(cueNames);
-        secondBox.setSelectedItem("<Select a Cue>");
+        JComboBox secondBox = new JComboBox<>(destinationCuePlaces);
+        secondBox.setSelectedItem("<To The End>");
         secondBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 //e.getItem();
-                secondPosition = java.util.Arrays.asList(cueNames).indexOf(e.getItem());
+                destinationIndex = java.util.Arrays.asList(destinationCuePlaces).indexOf(e.getItem());
             }
         });
         secondPanel.add(secondBox);
@@ -113,11 +117,11 @@ public class SwapCueDialog extends JDialog {
         approveOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                if (firstPosition == defaultPosition || secondPosition == defaultPosition){
-                    ErrorDialog ed = new ErrorDialog("You must select two cues!", parent);
+                if (selectedCueIndex == defaultPosition){
+                    ErrorDialog ed = new ErrorDialog("You must select a cue!", parent);
                     ed.showDialog();
-                } else if (firstPosition == secondPosition){
-                    ErrorDialog ed = new ErrorDialog("You must select two DIFFERENT cues!", parent);
+                } else if (selectedCueIndex == destinationIndex){
+                    ErrorDialog ed = new ErrorDialog("It's pointless to move something to the place it already was!", parent);
                     ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
@@ -129,9 +133,8 @@ public class SwapCueDialog extends JDialog {
         buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
         
-
         setModalityType(ModalityType.APPLICATION_MODAL);
-        setTitle("Swap Cues");
+        setTitle("Move Cue");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -143,11 +146,11 @@ public class SwapCueDialog extends JDialog {
         return closeState;
     }
     
-    public int getSecondPosition() {
-        return firstPosition;
+    public int getPositionOfCueToMove() {
+        return selectedCueIndex;
     }
     
-    public int getFirstPosition() {
-        return secondPosition;
+    public int getDestinationPosition() {
+        return destinationIndex;
     }
 }

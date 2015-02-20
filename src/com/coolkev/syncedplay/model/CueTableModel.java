@@ -139,4 +139,9 @@ public class CueTableModel extends AbstractTableModel {
         Collections.swap(this.cues, rowOne, rowTwo);
         fireTableDataChanged();
     }
+    
+    public void moveCue(int startIndex, int endIndex){
+        System.out.println("Moving from: "+ startIndex);
+        System.out.println("To: "+ endIndex);
+    }
 }
