@@ -241,6 +241,18 @@ public class SyncedPlay extends JFrame {
         
         menubar.add(cues);
         
+        menubar.add(Box.createHorizontalGlue());
+        
+        JMenu help = new JMenu("Help");
+        OnlineHelpAction onlineHelpAction = new OnlineHelpAction("Online Help", "Brings up the online help pages", KeyEvent.VK_F1);
+        JMenuItem onlineHelpActionMenuItem = new JMenuItem(onlineHelpAction);
+        help.add(onlineHelpActionMenuItem);
+        AboutBoxAction aboutBoxAction = new AboutBoxAction("About", "Loads the About Page", KeyEvent.VK_A);
+        JMenuItem aboutBoxActionMenuItem = new JMenuItem(aboutBoxAction);
+        help.add(aboutBoxActionMenuItem);
+        
+        menubar.add(help);
+        
         setJMenuBar(menubar);
     }
 
