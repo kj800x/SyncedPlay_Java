@@ -2,6 +2,7 @@
     [X] - Copy the Audio Files
     [x] - Write the Text Files
  [x] - Make Loading Work
+ [ ] - Use something other than null for setParentElement;
  [x] - Cue Swapping
  [x] - Save and load should pop up GUI dialogs that make more sense.
  [x] - Create new cue <INSERT BEFORE> should be end of show by default
@@ -9,6 +10,7 @@
  [x] - Create new cue <IMPORT!> should be <CREATE!>
  [x] - Cue table numbers should start at 1
  [ ] - Dark Style
+    [x] - Find something awesome that will totaly help with this
  [ ] - Looping
  [ ] - Adjust Volume Level
     [ ] - Fade In

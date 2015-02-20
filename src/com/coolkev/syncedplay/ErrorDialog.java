@@ -44,7 +44,7 @@ class ErrorDialog extends JDialog {
         setTitle("Error");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(200,100);
+        setSize(400,100);
     }
     
     void showOpenDialog() {

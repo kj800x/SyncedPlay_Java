@@ -29,7 +29,7 @@ public class SaveAsAction extends KevinBaseAction {
         FileFilter syncFilter = new FileNameExtensionFilter("Synced Play Projects", "sync");
         fileChooser.setFileFilter(syncFilter);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             if (!file.getName().endsWith(".sync")) {
                 file = new File(file.getAbsolutePath() + ".sync");

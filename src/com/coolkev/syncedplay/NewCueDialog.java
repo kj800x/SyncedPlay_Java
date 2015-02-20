@@ -46,6 +46,7 @@ class NewCueDialog extends JDialog {
             i++;
         }
         cueNames[i] = "<At The End>";
+        insertAfter = i;
         
         initUI(cues);
     }

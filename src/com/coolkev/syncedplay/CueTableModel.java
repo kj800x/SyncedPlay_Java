@@ -128,6 +128,8 @@ public class CueTableModel extends AbstractTableModel {
     }
 
     void addCue(Cue cue, int before) {
+        System.out.println(before);
+        System.out.println(this.cues);
         this.cues.add(before, cue);
         fireTableDataChanged();
     }

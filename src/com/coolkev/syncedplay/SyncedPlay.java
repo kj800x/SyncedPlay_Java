@@ -4,6 +4,7 @@
  */
 package com.coolkev.syncedplay;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -61,23 +62,24 @@ public class SyncedPlay extends JFrame {
     }
 
     final void setLaF() {
-        try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        
+        /*UIManager.put("nimbusLightBackground", new Color(10,10,10));
+        UIManager.put("nimbusBase", new Color(0,0,0));
+        UIManager.put("nimbusBlueGrey", new Color(0,0,0));
+        UIManager.put("control", new Color(0,0,0));
+        UIManager.put("text", new Color(255,255,255));*/
+        
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            System.out.println(info.getName());
+            if ("Nimbus".equals(info.getName())) {
+                System.out.println("set LAF to "+ info.getName());
+                try {
                     UIManager.setLookAndFeel(info.getClassName());
-                    break;
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    System.out.println("Couldn't find Nimbus");
+                    //Logger.getLogger(SyncedPlay.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            throw new ClassNotFoundException();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            try {
-                // Set System L&F
-                UIManager.setLookAndFeel(
-                        //"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-                        //UIManager.getCrossPlatformLookAndFeelClassName());
-                        UIManager.getSystemLookAndFeelClassName());
-            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException z) {
-                // handle exception
+                break;
             }
         }
     }
@@ -94,6 +96,11 @@ public class SyncedPlay extends JFrame {
         String projectName = projectFile.getName().replace(".sync", "");
         String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
         File projectDataDir = new File(projectDataDirPath);
+        if (!projectDataDir.exists()){
+            ErrorDialog ed = new ErrorDialog("Project_Data folder doesn't exist. Loading failed!");
+            ed.showOpenDialog();
+            return;
+        }
         System.out.println("Loading from :" + projectFile);
         cueTableModel.blank();
         soundTableModel.blank();
