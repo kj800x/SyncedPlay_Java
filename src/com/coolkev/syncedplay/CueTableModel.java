@@ -6,6 +6,8 @@ package com.coolkev.syncedplay;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -34,6 +36,21 @@ public class CueTableModel extends AbstractTableModel {
             out.append(cue.getActionsText()).append("\n");
         }
         return out.toString();
+    }
+    
+    public void blank(){
+        this.cues = new ArrayList();
+        this.nextCue = 0;
+        fireTableDataChanged();
+    }
+    
+    public void load(String s){
+        Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
+        ArrayList<Cue> newCues = new ArrayList<>();
+        for (String key : parsedString.keySet()){
+            newCues.add(new Cue(key, ActionsTextParser.parseText(parsedString.get(key))));
+        }
+        setCues(newCues);
     }
     
     @Override

@@ -1,9 +1,10 @@
- [ ] - Make Saving Work
-    [ ] - Copy the Audio Files
-    [ ] - Write the Text Files
- [ ] - Make Loading Work
+ [X] - Make Saving Work
+    [X] - Copy the Audio Files
+    [x] - Write the Text Files
+ [x] - Make Loading Work
  [x] - Cue Swapping
  [ ] - Dark Style
+ [ ] - Looping
  [ ] - Adjust Volume Level
     [ ] - Fade In
     [ ] - Fade Out

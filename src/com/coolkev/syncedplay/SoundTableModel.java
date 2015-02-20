@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import static java.util.Collections.list;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -36,6 +38,21 @@ public class SoundTableModel extends AbstractTableModel {
         keyToFile.put(key, file);
         keyToThreads.put(key, new ArrayList<Thread>());
         fireTableDataChanged();
+    }
+    
+    public void blank(){
+        panic();
+        cleanUpDeadThreads();
+        keyToFile = new TreeMap();
+        keyToThreads = new TreeMap();
+        fireTableDataChanged();
+    }
+    
+    public void load(String s, String dir){
+        Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
+        for (String key : parsedString.keySet()){
+            learnSound(key, new File(dir + "/" + parsedString.get(key)));
+        }
     }
     
     void runAction(Action a){
@@ -86,6 +103,24 @@ public class SoundTableModel extends AbstractTableModel {
                     iterator.remove();
                 }
             }*/
+    }
+    
+    void panic(){
+        Set<String> keys = keyToThreads.keySet();
+        for (String key : keys){
+            ArrayList<Thread> threadList = keyToThreads.get(key);
+            for (Iterator<Thread> iterator = threadList.iterator(); iterator.hasNext();) {
+                Thread thread = iterator.next();
+                if (thread.isAlive()) {
+                    thread.interrupt();
+                }
+                iterator.remove();
+            }
+        }
+    }
+    
+    File[] getFiles(){
+        return keyToFile.values().toArray(new File[keyToFile.values().size()]);
     }
     
     private void cleanUpDeadThreads(){

@@ -14,11 +14,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -78,11 +82,35 @@ public class SyncedPlay extends JFrame {
         }
     }
 
+    static final String loadFromFile(File file){
+        try {
+            return new Scanner(file).useDelimiter("\\Z").next();
+        } catch (FileNotFoundException ex) {}
+        return "";
+    }
+    
     final void loadFromDirectory(String directory) {
         System.out.println("Loading from :" + directory);
+        cueTableModel.blank();
+        soundTableModel.blank();
+        File cuesF = new File(directory + "/cues.txt");
+        if (cuesF.canRead()){
+            String cuesData = loadFromFile(cuesF);
+            cueTableModel.load(cuesData);
+        } else {
+            ErrorDialog ed = new ErrorDialog("Couldn't load the cue file!");
+            ed.showOpenDialog();
+        }
+        File soundsF = new File(directory + "/sounds.txt");
+        if (soundsF.canRead()){
+            String soundsData = loadFromFile(soundsF);
+            soundTableModel.load(soundsData, directory);
+        } else {
+            ErrorDialog ed = new ErrorDialog("Couldn't load the sound file!");
+            ed.showOpenDialog();
+        }
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
         currentSaveDirectory.append(directory);
-
     }
 
     final void saveToDirectory(String directory) {
@@ -100,9 +128,14 @@ public class SyncedPlay extends JFrame {
         //Create Cues File
         File cuesF = new File(directory + "/cues.txt");
         overwriteToFile(cuesF, cueTableModel.save());
-        //Create Cues File
+        //Create Sounds File
         File soundsF = new File(directory + "/sounds.txt");
         overwriteToFile(soundsF, soundTableModel.save());
+        //Copy all sounds to the new directory
+        File[] files = soundTableModel.getFiles();
+        for (File file : files){
+            FileCopier.copyFile(file, new File(directory + "/" + file.getName()));
+        }
         //Update the current loaded file
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
         currentSaveDirectory.append(directory);
@@ -361,6 +394,10 @@ public class SyncedPlay extends JFrame {
                         System.out.println("Cannot run command");
                     }
                     //cueTableModel.addCue(new Cue());
+                    e.consume();
+                } else if (e.getKeyChar() == '!') {
+                    System.out.println("PANIC");
+                    soundTableModel.panic();
                     e.consume();
                 } else if (e.getKeyChar() == '>') {
                     System.out.println("Step Forward");
