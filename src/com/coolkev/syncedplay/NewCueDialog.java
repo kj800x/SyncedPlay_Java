@@ -5,7 +5,6 @@
 package com.coolkev.syncedplay;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -39,6 +38,15 @@ class NewCueDialog extends JDialog {
     
     public NewCueDialog(ArrayList<Cue> cues) {
         super();
+        
+        cueNames = new String[cues.size() + 1];
+        int i = 0;
+        for (Cue cue : cues){
+            cueNames[i] = "Before \"" + cue.getDescription() + "\"";
+            i++;
+        }
+        cueNames[i] = "<At The End>";
+        
         initUI(cues);
     }
 
@@ -77,16 +85,10 @@ class NewCueDialog extends JDialog {
         
         JPanel afterPanel = new JPanel();
         afterPanel.setLayout(new BoxLayout(afterPanel, BoxLayout.X_AXIS));
-        afterPanel.add(new JLabel("Insert Before: "));
+        afterPanel.add(new JLabel("Insert: "));
         afterPanel.add(Box.createRigidArea(new Dimension(7, 0)));
-        cueNames = new String[cues.size() + 1];
-        int i = 0;
-        for (Cue cue : cues){
-            cueNames[i] = cue.getDescription();
-            i++;
-        }
-        cueNames[i] = "[INSERT AT THE END]";
         JComboBox box = new JComboBox<>(cueNames);
+        box.setSelectedItem("<At The End>");
         box.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -111,7 +113,7 @@ class NewCueDialog extends JDialog {
             }
         });
         buttonsPanel.add(close);
-        JButton approveOption = new JButton("Import!");
+        JButton approveOption = new JButton("Create!");
         approveOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {

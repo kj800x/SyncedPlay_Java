@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/syncedplay/LoadAction.java</file>
-            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/syncedplay/SyncedPlay.java</file>
-            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/syncedplay/SoundManager.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/IniFormatParser.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/todo.txt</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/SwapCueDialog.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/FileCopier.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/SoundTableModel.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/ErrorDialog.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/NewCueAction.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/CueTableModel.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/SyncedPlay.java</file>
         </group>
     </open-files>
 </project-private>

@@ -3,6 +3,11 @@
     [x] - Write the Text Files
  [x] - Make Loading Work
  [x] - Cue Swapping
+ [ ] - Save and load should pop up GUI dialogs that make more sense.
+ [x] - Create new cue <INSERT BEFORE> should be end of show by default
+ [x] - Create new cue <INSERT BEFORE> should have new text.
+ [x] - Create new cue <IMPORT!> should be <CREATE!>
+ [ ] - Cue table numbers should start at 1
  [ ] - Dark Style
  [ ] - Looping
  [ ] - Adjust Volume Level
