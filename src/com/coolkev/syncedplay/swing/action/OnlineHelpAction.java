@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.swing.action;
 
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -18,12 +19,16 @@ import javax.swing.ImageIcon;
  */
 public class OnlineHelpAction extends KevinBaseAction {
 
-    public OnlineHelpAction(String text, ImageIcon icon, String desc, Integer mnemonic) {
+    final Component parent;
+    
+    public OnlineHelpAction(String text, ImageIcon icon, String desc, Integer mnemonic, final Component parent) {
         super(text, icon, desc, mnemonic);
+        this.parent = parent;
     }
 
-    public OnlineHelpAction(String text, String desc, Integer mnemonic) {
+    public OnlineHelpAction(String text, String desc, Integer mnemonic, final Component parent) {
         super(text, desc, mnemonic);
+        this.parent = parent;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class OnlineHelpAction extends KevinBaseAction {
                 Desktop.getDesktop().browse(new URI("http://redmondtheatretech.com/SyncedPlay/Help/"));
             } catch (IOException | URISyntaxException e) { /* TODO: error handling */ } 
         } else {
-            ErrorDialog ed = new ErrorDialog("Navigate to http://redmondtheatretech.com/SyncedPlay/Help/ in your web browser.");
+            ErrorDialog ed = new ErrorDialog("Navigate to http://redmondtheatretech.com/SyncedPlay/Help/ in your web browser.", parent);
             ed.showDialog();
         }   
     }

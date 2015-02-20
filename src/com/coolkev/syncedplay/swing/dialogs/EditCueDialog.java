@@ -6,6 +6,7 @@ package com.coolkev.syncedplay.swing.dialogs;
 
 import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.model.Cue;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,12 +29,12 @@ public class EditCueDialog extends JDialog {
     private JTextArea actionsTextArea;
     private JTextField descTextField;
     
-    public EditCueDialog(Cue cue) {
+    public EditCueDialog(Cue cue, final Component parent) {
         super();
-        initUI(cue);
+        initUI(cue, parent);
     }
 
-    private final void initUI(Cue cue) {
+    private final void initUI(Cue cue, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -87,10 +88,10 @@ public class EditCueDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (descTextField.getText().length() == 0){
-                    ErrorDialog ed = new ErrorDialog("You must provide a description!");
+                    ErrorDialog ed = new ErrorDialog("You must provide a description!", parent);
                     ed.showDialog();
                 } else if (!ActionsTextParser.canParseText(actionsTextArea.getText())) {
-                    ErrorDialog ed = new ErrorDialog("Some of the actions aren't valid!");
+                    ErrorDialog ed = new ErrorDialog("Some of the actions aren't valid!", parent);
                     ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
@@ -105,7 +106,7 @@ public class EditCueDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setTitle("Edit Cue");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }

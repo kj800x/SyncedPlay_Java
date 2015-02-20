@@ -7,6 +7,7 @@ package com.coolkev.syncedplay.swing.dialogs;
 import com.coolkev.syncedplay.action.Action;
 import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.model.Cue;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +36,7 @@ public class NewCueDialog extends JDialog {
     private int insertAfter = 0;
     String[] cueNames;
     
-    public NewCueDialog(ArrayList<Cue> cues) {
+    public NewCueDialog(ArrayList<Cue> cues, final Component parent) {
         super();
         
         cueNames = new String[cues.size() + 1];
@@ -47,10 +48,10 @@ public class NewCueDialog extends JDialog {
         cueNames[i] = "<At The End>";
         insertAfter = i;
         
-        initUI(cues);
+        initUI(cues, parent);
     }
 
-    private final void initUI(ArrayList<Cue> cues) {
+    private final void initUI(ArrayList<Cue> cues, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -122,10 +123,10 @@ public class NewCueDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (!ActionsTextParser.canParseText(actionsTextArea.getText())){
-                    ErrorDialog ed = new ErrorDialog("The actions are not valid!");
+                    ErrorDialog ed = new ErrorDialog("The actions are not valid!", parent);
                     ed.showDialog();
                 } else if (descTextField.getText().length() == 0){
-                    ErrorDialog ed = new ErrorDialog("You must provide a description!");
+                    ErrorDialog ed = new ErrorDialog("You must provide a description!", parent);
                     ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
@@ -141,7 +142,7 @@ public class NewCueDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setTitle("New Cue");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }

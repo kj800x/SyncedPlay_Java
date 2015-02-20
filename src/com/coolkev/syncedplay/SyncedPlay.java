@@ -23,6 +23,7 @@ import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
 import com.coolkev.syncedplay.swing.dialogs.EditCueDialog;
 import com.coolkev.syncedplay.swing.dialogs.ConfirmDialog;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -113,7 +114,7 @@ public class SyncedPlay extends JFrame {
         String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
         File projectDataDir = new File(projectDataDirPath);
         if (!projectDataDir.exists()){
-            ErrorDialog ed = new ErrorDialog("Project_Data folder doesn't exist. Loading failed!");
+            ErrorDialog ed = new ErrorDialog("Project_Data folder doesn't exist. Loading failed!", this);
             ed.showDialog();
             return;
         }
@@ -125,7 +126,7 @@ public class SyncedPlay extends JFrame {
             String cuesData = loadFromFile(cuesF);
             cueTableModel.load(cuesData);
         } else {
-            ErrorDialog ed = new ErrorDialog("Couldn't load the cue file!");
+            ErrorDialog ed = new ErrorDialog("Couldn't load the cue file!", this);
             ed.showDialog();
         }
         File soundsF = new File(projectDataDir.getAbsolutePath() + "/sounds.txt");
@@ -133,7 +134,7 @@ public class SyncedPlay extends JFrame {
             String soundsData = loadFromFile(soundsF);
             soundTableModel.load(soundsData, projectDataDir.getAbsolutePath());
         } else {
-            ErrorDialog ed = new ErrorDialog("Couldn't load the sound file!");
+            ErrorDialog ed = new ErrorDialog("Couldn't load the sound file!", this);
             ed.showDialog();
         }
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
@@ -191,7 +192,7 @@ public class SyncedPlay extends JFrame {
                 //System.out.println((String) args[0]);
                 //TODO do stuff
             }
-        });
+        }, this);
         JMenuItem saveMenuItem = new JMenuItem(sa);
         file.add(saveMenuItem);
         SaveAsAction saa = new SaveAsAction("Save as", "Saves a file", KeyEvent.VK_S, new Callback() {
@@ -202,7 +203,7 @@ public class SyncedPlay extends JFrame {
                 //System.out.println((String) args[0]);
                 //TODO do stuff
             }
-        });
+        }, this);
         JMenuItem saveAsMenuItem = new JMenuItem(saa);
         file.add(saveAsMenuItem);
 
@@ -215,7 +216,7 @@ public class SyncedPlay extends JFrame {
                 //String text = readFile((File) args[0]);
                 //System.out.print(text);
             }
-        });
+        }, this);
         JMenuItem loadMenuItem = new JMenuItem(la);
         file.add(loadMenuItem);
 
@@ -235,7 +236,7 @@ public class SyncedPlay extends JFrame {
                 Object[] args = getArgs();
                 soundTableModel.learnSound((String) args[0], (File) args[1]);
             }
-        });
+        }, this);
         JMenuItem importActionMenuItem = new JMenuItem(importAction);
         sounds.add(importActionMenuItem);
         menubar.add(sounds);
@@ -248,10 +249,10 @@ public class SyncedPlay extends JFrame {
                 cueTableModel.addCue((Cue) args[0], (int) args[1]);
 //                soundTableModel.learnSound((String) args[0], (File) args[1]);
             }
-        });
+        }, this);
         JMenuItem newCueActionMenuItem = new JMenuItem(newCueAction);
         cues.add(newCueActionMenuItem);
-        SwapCueAction swapCueAction = new SwapCueAction("Swap Cue", "Swaps two cues", KeyEvent.VK_S, cueTableModel);
+        SwapCueAction swapCueAction = new SwapCueAction("Swap Cue", "Swaps two cues", KeyEvent.VK_S, cueTableModel, this);
         JMenuItem swapCueActionMenuItem = new JMenuItem(swapCueAction);
         cues.add(swapCueActionMenuItem);
         
@@ -260,10 +261,10 @@ public class SyncedPlay extends JFrame {
         menubar.add(Box.createHorizontalGlue());
         
         JMenu help = new JMenu("Help");
-        OnlineHelpAction onlineHelpAction = new OnlineHelpAction("Online Help", "Brings up the online help pages", KeyEvent.VK_F1);
+        OnlineHelpAction onlineHelpAction = new OnlineHelpAction("Online Help", "Brings up the online help pages", KeyEvent.VK_F1, this);
         JMenuItem onlineHelpActionMenuItem = new JMenuItem(onlineHelpAction);
         help.add(onlineHelpActionMenuItem);
-        AboutBoxAction aboutBoxAction = new AboutBoxAction("About", "Loads the About Page", KeyEvent.VK_A);
+        AboutBoxAction aboutBoxAction = new AboutBoxAction("About", "Loads the About Page", KeyEvent.VK_A, this);
         JMenuItem aboutBoxActionMenuItem = new JMenuItem(aboutBoxAction);
         help.add(aboutBoxActionMenuItem);
         
@@ -285,13 +286,13 @@ public class SyncedPlay extends JFrame {
 
     final void buildPopUpMenu() {
         cuesTablePMenu = new JPopupMenu();
-
+        final Container mainWindow = this;
         JMenuItem editCue = new JMenuItem("Edit");
         editCue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = cuesTable.rowAtPoint(contextClickPoint);
-                EditCueDialog ecd = new EditCueDialog(cueTableModel.getCue(row));
+                EditCueDialog ecd = new EditCueDialog(cueTableModel.getCue(row), mainWindow);
                 if (ecd.showDialog() == EditCueDialog.APPROVE_OPTION) {
                     cueTableModel.setCue(row, ecd.getCue());
                 }
@@ -304,7 +305,7 @@ public class SyncedPlay extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = cuesTable.rowAtPoint(contextClickPoint);
-                ConfirmDialog confirmDialog = new ConfirmDialog("Are you sure you want to delete this cue?");
+                ConfirmDialog confirmDialog = new ConfirmDialog("Are you sure you want to delete this cue?", mainWindow);
                 if (confirmDialog.showDialog() == EditCueDialog.APPROVE_OPTION) {
                     System.out.println("Deleting " + row);
                     cueTableModel.deleteCue(row);

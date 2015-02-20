@@ -4,6 +4,7 @@
  */
 package com.coolkev.syncedplay.swing.dialogs;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,12 +22,12 @@ public class ConfirmDialog extends JDialog {
     public static int APPROVE_OPTION = 1;
     private int closeState = 0;
     
-    public ConfirmDialog(String message) {
+    public ConfirmDialog(String message, final Component parent) {
         super();
-        initUI(message);
+        initUI(message, parent);
     }
 
-    private final void initUI(String message) {
+    private final void initUI(String message, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -64,7 +65,7 @@ public class ConfirmDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setTitle("Confirm Dialog");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }

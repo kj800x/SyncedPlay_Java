@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.swing.action;
 
 import com.coolkev.syncedplay.util.Callback;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,14 +23,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class LoadAction extends KevinBaseAction {
     String text;
     Callback callback;
+    final Component parent;
     
-    public LoadAction(String text, ImageIcon icon, String desc, Integer mnemonic, Callback r) {
+    public LoadAction(String text, ImageIcon icon, String desc, Integer mnemonic, Callback r, final Component parent) {
         super(text, icon, desc, mnemonic);
         callback = r;
+        this.parent = parent;
     }
-    public LoadAction(String text, String desc, Integer mnemonic, Callback r) {
+    public LoadAction(String text, String desc, Integer mnemonic, Callback r, final Component parent) {
         super(text, desc, mnemonic);
         callback = r;
+        this.parent = parent;
     }
     
     @Override
@@ -38,7 +42,7 @@ public class LoadAction extends KevinBaseAction {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileFilter syncFilter = new FileNameExtensionFilter("Synced Play Projects", "sync");
         fileChooser.setFileFilter(syncFilter);
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
           callback.setArgs(file.getAbsolutePath());
           callback.run();

@@ -4,6 +4,7 @@
  */
 package com.coolkev.syncedplay.swing.dialogs;
 
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,12 +19,12 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class ErrorDialog extends JDialog {
     
-    public ErrorDialog(String errorText) {
+    public ErrorDialog(String errorText, final Component parent) {
         super();
-        initUI(errorText);
+        initUI(errorText, parent);
     }
 
-    private final void initUI(String errorText) {
+    private final void initUI(String errorText, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel(errorText);
@@ -44,7 +45,8 @@ public class ErrorDialog extends JDialog {
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         setTitle("Error");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
+        System.out.println(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }

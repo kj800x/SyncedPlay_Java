@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.swing.action;
 
 import com.coolkev.syncedplay.util.Callback;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -19,11 +20,13 @@ public class SaveAction extends KevinBaseAction {
     
     private final Callback callback;
     private final StringBuilder csd;
+    final Component parent;
 
-    public SaveAction(String text, String desc, Integer mnemonic, StringBuilder currentSaveDir, Callback r) {
+    public SaveAction(String text, String desc, Integer mnemonic, StringBuilder currentSaveDir, Callback r, final Component parent) {
         super(text, desc, mnemonic);
         this.callback = r;
         this.csd = currentSaveDir;
+        this.parent = parent;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class SaveAction extends KevinBaseAction {
             FileFilter syncFilter = new FileNameExtensionFilter("Synced Play Projects", "sync");
             fileChooser.setFileFilter(syncFilter);
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
               File file = fileChooser.getSelectedFile();
               if (!file.getName().endsWith(".sync")) {
                   file = new File(file.getAbsolutePath() + ".sync");
@@ -46,7 +49,5 @@ public class SaveAction extends KevinBaseAction {
             }
         }
     }
-    
-    
     
 }

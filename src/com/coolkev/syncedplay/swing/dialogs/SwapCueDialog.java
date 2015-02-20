@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.swing.dialogs;
 
 import com.coolkev.syncedplay.model.Cue;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,7 @@ public class SwapCueDialog extends JDialog {
     private int secondPosition;
     private int defaultPosition;
     
-    public SwapCueDialog(ArrayList<Cue> cues) {
+    public SwapCueDialog(ArrayList<Cue> cues, final Component parent) {
         super();
         
         cueNames = new String[cues.size() + 1];
@@ -45,10 +46,10 @@ public class SwapCueDialog extends JDialog {
         firstPosition = i;
         defaultPosition = i;
         
-        initUI();
+        initUI(parent);
     }
 
-    private final void initUI() {
+    private final void initUI(final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         //getContentPane()
         //        .setBorder(new EmptyBorder(10, 10, 10, 10) );
@@ -113,10 +114,10 @@ public class SwapCueDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (firstPosition == defaultPosition || secondPosition == defaultPosition){
-                    ErrorDialog ed = new ErrorDialog("You must select two cues!");
+                    ErrorDialog ed = new ErrorDialog("You must select two cues!", parent);
                     ed.showDialog();
                 } else if (firstPosition == secondPosition){
-                    ErrorDialog ed = new ErrorDialog("You must select two DIFFERENT cues!");
+                    ErrorDialog ed = new ErrorDialog("You must select two DIFFERENT cues!", parent);
                     ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
@@ -132,7 +133,7 @@ public class SwapCueDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setTitle("Swap Cues");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }

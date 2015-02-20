@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.swing.dialogs;
 
 import com.coolkev.syncedplay.model.SoundTableModel;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,12 +33,12 @@ public class ImportAudioDialog extends JDialog {
     private JLabel fileNameLabel;
     private JTextField keyTextField;
     
-    public ImportAudioDialog() {
+    public ImportAudioDialog(final Component parent) {
         super();
-        initUI();
+        initUI(parent);
     }
 
-    private final void initUI() {
+    private final void initUI(final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -68,7 +69,7 @@ public class ImportAudioDialog extends JDialog {
                     selectedFile = file;
                     fileNameLabel.setText(file.getName());
                   } else {
-                    ErrorDialog ed = new ErrorDialog("The file is not in a known format!");
+                    ErrorDialog ed = new ErrorDialog("The file is not in a known format!", parent);
                     ed.showDialog();
                   }
                 }
@@ -111,10 +112,10 @@ public class ImportAudioDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (selectedFile == null){
-                    ErrorDialog ed = new ErrorDialog("You must select a file!");
+                    ErrorDialog ed = new ErrorDialog("You must select a file!", parent);
                     ed.showDialog();
                 } else if (keyTextField.getText().length() == 0){
-                    ErrorDialog ed = new ErrorDialog("You must provide a keyword!");
+                    ErrorDialog ed = new ErrorDialog("You must provide a keyword!", parent);
                     ed.showDialog();
                 } else {
                     closeState = APPROVE_OPTION;
@@ -130,7 +131,7 @@ public class ImportAudioDialog extends JDialog {
         setModalityType(ModalityType.APPLICATION_MODAL);
         setTitle("Import Sound");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(parent);
         getRootPane().setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         pack();
     }
