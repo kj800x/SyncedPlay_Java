@@ -89,11 +89,15 @@ public class SyncedPlay extends JFrame {
         return "";
     }
     
-    final void loadFromDirectory(String directory) {
-        System.out.println("Loading from :" + directory);
+    final void loadFromDirectory(String projectFilePath) {
+        File projectFile = new File(projectFilePath);
+        String projectName = projectFile.getName().replace(".sync", "");
+        String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
+        File projectDataDir = new File(projectDataDirPath);
+        System.out.println("Loading from :" + projectFile);
         cueTableModel.blank();
         soundTableModel.blank();
-        File cuesF = new File(directory + "/cues.txt");
+        File cuesF = new File(projectDataDir.getAbsolutePath() + "/cues.txt");
         if (cuesF.canRead()){
             String cuesData = loadFromFile(cuesF);
             cueTableModel.load(cuesData);
@@ -101,24 +105,33 @@ public class SyncedPlay extends JFrame {
             ErrorDialog ed = new ErrorDialog("Couldn't load the cue file!");
             ed.showOpenDialog();
         }
-        File soundsF = new File(directory + "/sounds.txt");
+        File soundsF = new File(projectDataDir.getAbsolutePath() + "/sounds.txt");
         if (soundsF.canRead()){
             String soundsData = loadFromFile(soundsF);
-            soundTableModel.load(soundsData, directory);
+            soundTableModel.load(soundsData, projectDataDir.getAbsolutePath());
         } else {
             ErrorDialog ed = new ErrorDialog("Couldn't load the sound file!");
             ed.showOpenDialog();
         }
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
-        currentSaveDirectory.append(directory);
+        currentSaveDirectory.append(projectFile.getAbsolutePath());
+    }
+    
+    final static String makeProjectFileContents(){
+        return "This file is a placeholder file. It means nothing.";
     }
 
-    final void saveToDirectory(String directory) {
-        System.out.println("Saving to :" + directory);
-        File directoryF = new File(directory);
+    final void saveToDirectory(String projectFilePath) {
+        File projectFile = new File(projectFilePath);
+        String projectName = projectFile.getName().replace(".sync", "");
+        String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
+        File projectDataDir = new File(projectDataDirPath);
+        System.out.println("Saving to :" + projectFile);
+        //Create project file;
+        overwriteToFile(projectFile, makeProjectFileContents());
         //Make sure the directory exists, or create it if it doesn't
-        if (!directoryF.exists()) {
-            if (directoryF.mkdir()) {
+        if (!projectDataDir.exists()) {
+            if (projectDataDir.mkdir()) {
                 System.out.println("Directory Created");
             } else {
                 System.out.println("Failed to create directory");
@@ -126,19 +139,19 @@ public class SyncedPlay extends JFrame {
             }
         }
         //Create Cues File
-        File cuesF = new File(directory + "/cues.txt");
+        File cuesF = new File(projectDataDir.getAbsolutePath() + "/cues.txt");
         overwriteToFile(cuesF, cueTableModel.save());
         //Create Sounds File
-        File soundsF = new File(directory + "/sounds.txt");
+        File soundsF = new File(projectDataDir.getAbsolutePath() + "/sounds.txt");
         overwriteToFile(soundsF, soundTableModel.save());
         //Copy all sounds to the new directory
         File[] files = soundTableModel.getFiles();
         for (File file : files){
-            FileCopier.copyFile(file, new File(directory + "/" + file.getName()));
+            FileCopier.copyFile(file, new File(projectDataDir.getAbsolutePath() + "/" + file.getName()));
         }
         //Update the current loaded file
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
-        currentSaveDirectory.append(directory);
+        currentSaveDirectory.append(projectFile.getAbsolutePath());
     }
 
     final void makeMenuBar() {

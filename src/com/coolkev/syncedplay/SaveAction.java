@@ -7,6 +7,8 @@ package com.coolkev.syncedplay;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -30,9 +32,14 @@ public class SaveAction extends KevinBaseAction {
               callback.run();
         } else {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            FileFilter syncFilter = new FileNameExtensionFilter("Synced Play Projects", "sync");
+            fileChooser.setFileFilter(syncFilter);
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
               File file = fileChooser.getSelectedFile();
+              if (!file.getName().endsWith(".sync")) {
+                  file = new File(file.getAbsolutePath() + ".sync");
+              }
               callback.setArgs(file.getAbsolutePath());
               callback.run();
             }

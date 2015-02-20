@@ -35,7 +35,9 @@ class LoadAction extends KevinBaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileFilter syncFilter = new FileNameExtensionFilter("Synced Play Projects", "sync");
+        fileChooser.setFileFilter(syncFilter);
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
           callback.setArgs(file.getAbsolutePath());
