@@ -5,6 +5,7 @@
 package com.coolkev.syncedplay.util;
 
 import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.action.cueaction.GotoCueAction;
 import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
 import com.coolkev.syncedplay.action.soundaction.LoopSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
@@ -36,6 +37,13 @@ public class ActionsTextParser {
             case "panic":
                 //Format: [panic]
                 return new PanicSoundAction();
+            case "goto":
+                //Format: [goto, INDEX]
+                if (words.length == 2) { 
+                    return new GotoCueAction(Integer.parseInt(words[1]));
+                } else {
+                    throw new ParserException();
+                }
             case "loop":
                 //Format: [loop, KEYWORD]
                 if (words.length == 2) { 

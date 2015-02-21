@@ -10,6 +10,18 @@
 <project name="SyncedPlay" default="default" basedir=".">
     <description>Builds, tests, and runs the project SyncedPlay.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="-post-jar">
+      <exec dir="src/com/coolkev/syncedplay" executable="latex">
+        <arg value="Manual.tex"/>
+      </exec>
+      <exec dir="src/com/coolkev/syncedplay" executable="latex">
+        <arg value="Manual.tex"/>
+      </exec>
+      <exec dir="src/com/coolkev/syncedplay" executable="dvipdf">
+        <arg value="Manual.dvi"/>
+      </exec>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

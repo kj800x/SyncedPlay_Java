@@ -4,6 +4,8 @@
  */
 package com.coolkev.syncedplay.model;
 
+import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.action.cueaction.GotoCueAction;
 import com.coolkev.syncedplay.util.IniFormatParser;
 import com.coolkev.syncedplay.util.ActionsTextParser;
 import java.util.ArrayList;
@@ -28,6 +30,18 @@ public class CueTableModel extends AbstractTableModel {
     public CueTableModel(){
         this.cues = new ArrayList();
         this.nextCue = 0;
+    }
+    
+    
+    public void runAction(Action a){
+        if (a instanceof GotoCueAction){
+            GotoCueAction gtca = (GotoCueAction) a;
+            if (0 <= (gtca.getDestCueIndex() - 1) && (gtca.getDestCueIndex() <= cues.size())){
+                System.out.println("GOTO: "+ gtca.getDestCueIndex());
+                nextCue = (gtca.getDestCueIndex() - 1);
+                fireTableDataChanged();
+            }
+        }
     }
     
     public String save() {

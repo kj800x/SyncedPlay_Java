@@ -17,16 +17,16 @@ import javax.swing.ImageIcon;
  *
  * @author kevin
  */
-public class OnlineHelpAction extends KevinBaseAction {
+public class ManualAction extends KevinBaseAction {
 
     final Component parent;
     
-    public OnlineHelpAction(String text, ImageIcon icon, String desc, Integer mnemonic, final Component parent) {
+    public ManualAction(String text, ImageIcon icon, String desc, Integer mnemonic, final Component parent) {
         super(text, icon, desc, mnemonic);
         this.parent = parent;
     }
 
-    public OnlineHelpAction(String text, String desc, Integer mnemonic, final Component parent) {
+    public ManualAction(String text, String desc, Integer mnemonic, final Component parent) {
         super(text, desc, mnemonic);
         this.parent = parent;
     }
@@ -35,10 +35,10 @@ public class OnlineHelpAction extends KevinBaseAction {
     public void actionPerformed(ActionEvent q) {
         if (Desktop.isDesktopSupported()) {
             try {
-                Desktop.getDesktop().browse(new URI("http://redmondtheatretech.com/SyncedPlay/Help/"));
+                Desktop.getDesktop().browse(new URI("http://redmondtheatretech.com/SyncedPlay/Help/Manual.pdf"));
             } catch (IOException | URISyntaxException e) { /* TODO: error handling */ } 
         } else {
-            ErrorDialog ed = new ErrorDialog("Navigate to http://redmondtheatretech.com/SyncedPlay/Help/ in your web browser.", parent);
+            ErrorDialog ed = new ErrorDialog("Navigate to http://redmondtheatretech.com/SyncedPlay/Help/Manual.pdf in your web browser.", parent);
             ed.showDialog();
         }   
     }

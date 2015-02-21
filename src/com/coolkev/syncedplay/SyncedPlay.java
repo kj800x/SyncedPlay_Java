@@ -15,7 +15,7 @@ import com.coolkev.syncedplay.swing.action.SaveAction;
 import com.coolkev.syncedplay.swing.action.ImportSoundAction;
 import com.coolkev.syncedplay.swing.action.NewCueAction;
 import com.coolkev.syncedplay.swing.action.AboutBoxAction;
-import com.coolkev.syncedplay.swing.action.OnlineHelpAction;
+import com.coolkev.syncedplay.swing.action.ManualAction;
 import com.coolkev.syncedplay.swing.action.SaveAsAction;
 import com.coolkev.syncedplay.swing.action.LoadAction;
 import com.coolkev.syncedplay.util.FileCopier;
@@ -267,9 +267,9 @@ public class SyncedPlay extends JFrame {
         menubar.add(Box.createHorizontalGlue());
         
         JMenu help = new JMenu("Help");
-        OnlineHelpAction onlineHelpAction = new OnlineHelpAction("Online Help", "Brings up the online help pages", KeyEvent.VK_F1, this);
-        JMenuItem onlineHelpActionMenuItem = new JMenuItem(onlineHelpAction);
-        help.add(onlineHelpActionMenuItem);
+        ManualAction manualAction = new ManualAction("Manual", "Brings up the manual", KeyEvent.VK_F1, this);
+        JMenuItem manualActionMenuItem = new JMenuItem(manualAction);
+        help.add(manualActionMenuItem);
         AboutBoxAction aboutBoxAction = new AboutBoxAction("About", "Loads the About Page", KeyEvent.VK_A, this);
         JMenuItem aboutBoxActionMenuItem = new JMenuItem(aboutBoxAction);
         help.add(aboutBoxActionMenuItem);
@@ -281,9 +281,9 @@ public class SyncedPlay extends JFrame {
 
     final void runAction(Action a) {
         switch (a.handler()) {
-//            case Action.HANDLER_CUE_SUBSYSTEM:
-//                cueTableModel.runAction(a);
-//                break;
+            case Action.HANDLER_CUE_SUBSYSTEM:
+                cueTableModel.runAction(a);
+                break;
             case Action.HANDLER_SOUND_SUBSYSTEM:
                 soundTableModel.runAction(a);
                 break;
@@ -331,6 +331,16 @@ public class SyncedPlay extends JFrame {
             }
         });
         soundsTablePMenu.add(playSound);
+        JMenuItem loopSound = new JMenuItem("Loop");
+        loopSound.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Point pt = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent()).getLocation(); //TODO: This is supposed to get the screen location, of the upper right corner of the popup menu, but this doesn't work.
+                int row = soundsTable.rowAtPoint(contextClickPoint);
+                soundTableModel.loopSound(soundTableModel.keyFromRow(row));
+            }
+        });
+        soundsTablePMenu.add(loopSound);
         JMenuItem stopSound = new JMenuItem("Stop");
         stopSound.addActionListener(new ActionListener() {
             @Override

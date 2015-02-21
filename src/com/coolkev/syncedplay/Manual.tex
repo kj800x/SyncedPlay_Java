@@ -1,0 +1,182 @@
+\documentclass{article}
+\begin{document}
+\title{Synced Play \\ User Manual}
+\author{Kevin Johnson}
+\date{Last updated: \today}
+\maketitle{}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introducing Synced Play}
+
+Synced Play is a program developed to let a user playback sound effects
+at certain times during a theatrical performance. It is designed to
+playback sounds with very low overhead (so as to make playback much snappier)
+and to offer the option to loop sounds until told to stop. It also has a
+cues feature that allows the user to pre-program the show during rehearsals,
+and then simply step through the cues during the actual performances.
+
+\newpage
+
+\section{Sounds}
+
+Each sound that you use in your show must be imported and associated with
+a keyword.
+
+\subsection{Keywords}
+
+The keyword is a single word that you will use to refer to the sound for
+the rest of the show.
+
+Keywords must be a single word (no spaces) and contain only alphabetical
+letters. Keywords can not be changed after you choose them, so choose
+them wisely!
+
+\subsection{Importing Sounds}
+
+To import a sound, open the ``Sounds'' menu and select ``Import Audio''. Then
+you must select an audio file\footnote{Currently only WAV and AU files
+are supported} and then decide upon a keyword for the sound.
+
+\newpage
+
+\section{Actions}
+
+Actions are things that can happen.\footnote{Who would have guessed!} In
+Synced Play, actions are sentances that usually take the form ``verb keyword''
+
+There are five different actions in Synced Play right now:
+
+\subsection{Play Action}
+
+The play action is arguably the most fundamental action in the program.
+It allows you to play a sound once.
+
+It takes the form ``play keyword'', where keyword is the keyword of the 
+sound that you'd like to play. For example ``play doorbell'' would play
+the sound with the keyword ``doorbell'' once.
+
+\subsection{Loop Action}
+
+The loop action is very closely related to the play action. It's almost
+the same, but instead of playing a sound once, it will play the sound until
+it is stopped.\footnote{Right now you don't know how to stop it. If you
+start to loop a sound right now, it would loop forever! MWAHAHA!}
+
+It takes the form ``loop keyword'', where keyword is the keyword of the 
+sound that you'd like to loop. For example ``loop ringtone'' would play
+the sound with the keyword ``ringtone'' until stopped\footnote{by an
+unbalanced force...\footnote{Oops, this isn't my physics homework!}}.
+
+\subsection{Stop Action}
+
+The stop action simply stops the playback of a sound effect.\footnote{It
+is the savior of any of you who got trapped by the loop action} \footnote{
+Note that if you stop sound effect A, it will not stop sound effect B,
+but if you have two sound effect A's playing, it will stop both of them.}
+
+It takes the form ``stop keyword'', where keyword is the keyword of the 
+sound that you'd like to stop. For example ``stop ringtone'' will
+stop any currently playing sound effects with the keyword, ``ringtone''.
+
+\subsection{Panic Action}
+
+The panic action is a little bit different. It is used to stop playback
+of all sounds immediately. It's named, because it's what you want to use
+if all of a sudden your computer starts to make a ton of sound.\footnote{
+That is, sound coming out of Synced Play. If the sound's coming out of some
+other program, or the computer hardware itself, you're out of luck.} Also,
+it doesn't require a keyword.
+
+It takes the form ``panic''. Yep, that's it. Just ``panic''.
+
+\subsection{Goto Action}
+
+The goto action is slightly different too, because it deals with cues
+instead of with sounds. The goto action will set the ``on deck'' cue to
+the specified cue. \footnote{If this doesn't make sense right now, it will
+when you read the Cues section}
+
+It takes the form ``goto cue-number'', where cue-number is the number of the
+cue that you want to be on deck.
+
+\newpage
+
+\section{Cues}
+
+Cues are basically a way to have actions happen in a certain order. A cue
+has a ``Description'' and some ``Actions''. 
+
+\subsection{Creating Cues}
+
+To create a cue, open the ``Cues'' menu and select ``New Cue''. Give the cue
+a description (so you know what it does later) and enter some actions. You
+can enter one or more actions, each on a different line.
+
+For example, you may have a part in your show where a baby had been softly
+babbling up to that point, but begins to scream then. For the description
+you might enter ``Baby begins to scream'', and your actions might be:
+\begin{verbatim}
+stop babyBabble
+start babyScream
+\end{verbatim}
+In this way, the babbling would stop at the same time as the screaming
+starts allowing a seamless transition.
+
+\subsection{Using Cues}
+
+Once you have your show cue'd out, you probably want to actually play it
+back.\footnote{At some point at least, maybe you want to run through it
+a couple of times to make sure you got it right, or not.} To playback
+your cues, direct your attention to the bottom half of Synced Play. You
+may have noticed that it lists all your cues. One of your cues has a star
+next to it. This is the cue that is ``on deck''. If you press the ``TAB'' key
+the ``on deck'' will be run, and the cue that is after it will then be
+``on deck''. If you need to go forwards or backwards in the cue list without
+actually running any cues, you can use the ``$<$'' key to go back, and the
+``$>$'' key to go forwards.
+
+\newpage
+
+\section{Graphical Interface}
+
+You've used programs before. I'm not going to tell you about menus and
+such, but I will tell you whats different about Synced Play.
+
+The program has three different parts.\footnote{Excluding menus but I'm not
+going to explain those}
+
+\subsection{The Sound Table}
+
+The top part is the sound table. It lists all of
+the loaded sounds and what their keywords are. If you right click on it
+there will be a context menu with some things you can do.\footnote{I'm
+not going to tell you what things you can do. I'll leave that as an exercise
+to the reader.}
+
+\subsection{The Cue Table}
+
+The middle part is the cue table. It lists all of the cues that are
+currently loaded. If you right click on it there will be a context menu
+with some things you can do.\footnote{Again, another exercise for the reader}
+
+\subsection{The Command Line}
+
+The bottom part is the command line. It's a single line text box, so you
+might not have even noticed it yet. You can directly type an action in
+there and when you press ``ENTER'' it will be run.
+
+\newpage
+
+\section*{Thank You}
+
+That's it. Thanks for reading this long document. It took me a while to 
+write it.\footnote{But the footnotes helped keep me sane} Hopefully you
+kinda know how to use Synced Play now.\footnote{If not, you're on your
+own!}
+
+\end{document}
