@@ -27,7 +27,7 @@ public class ConfirmDialog extends JDialog {
         initUI(message, parent);
     }
 
-    private final void initUI(String message, final Component parent) {
+    private void initUI(String message, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -59,7 +59,6 @@ public class ConfirmDialog extends JDialog {
             }
         });
         buttonsPanel.add(approveOption);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
 
         setModalityType(ModalityType.APPLICATION_MODAL);

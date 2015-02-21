@@ -18,7 +18,6 @@ import com.coolkev.syncedplay.swing.action.AboutBoxAction;
 import com.coolkev.syncedplay.swing.action.OnlineHelpAction;
 import com.coolkev.syncedplay.swing.action.SaveAsAction;
 import com.coolkev.syncedplay.swing.action.LoadAction;
-import com.coolkev.syncedplay.swing.action.MoveCueAction;
 import com.coolkev.syncedplay.util.FileCopier;
 import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;

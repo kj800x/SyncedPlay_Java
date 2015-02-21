@@ -49,7 +49,7 @@ public class SwapCueDialog extends JDialog {
         initUI(parent);
     }
 
-    private final void initUI(final Component parent) {
+    private void initUI(final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         //getContentPane()
         //        .setBorder(new EmptyBorder(10, 10, 10, 10) );
@@ -126,7 +126,6 @@ public class SwapCueDialog extends JDialog {
             }
         });
         buttonsPanel.add(approveOption);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
         
 

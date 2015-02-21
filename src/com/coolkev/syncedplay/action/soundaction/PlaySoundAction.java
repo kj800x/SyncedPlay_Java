@@ -15,6 +15,7 @@ public class PlaySoundAction extends Action {
     private final String key;
     
     public PlaySoundAction(String key){
+        super();
         this.key = key;
     }
     

@@ -13,7 +13,8 @@
  [x] - Cue table numbers should start at 1
  [ ] - Dark Style
     [x] - Find something awesome that will totally help with this
- [ ] - Looping
+ [x] - Looping
+ [x] - Panic Action
  [ ] - Adjust Volume Level
     [ ] - Fade In
     [ ] - Fade Out

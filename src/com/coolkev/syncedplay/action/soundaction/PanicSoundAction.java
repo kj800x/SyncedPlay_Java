@@ -10,27 +10,20 @@ import com.coolkev.syncedplay.action.Action;
  *
  * @author kevin
  */
-public class StopSoundAction extends Action {
+public class PanicSoundAction extends Action {
     
-    private final String key;
-    
-    public StopSoundAction(String key){
+    public PanicSoundAction(){
         super();
-        this.key = key;
     }
     
     @Override
     public String toString() {
-        return "stop " + key;
+        return "panic";
     }
 
     @Override
     public int handler() {
         return Action.HANDLER_SOUND_SUBSYSTEM;
-    }
-    
-    public String getKeyword(){
-        return key;
     }
     
     

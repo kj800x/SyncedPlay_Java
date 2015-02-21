@@ -24,7 +24,7 @@ public class ErrorDialog extends JDialog {
         initUI(errorText, parent);
     }
 
-    private final void initUI(String errorText, final Component parent) {
+    private void initUI(String errorText, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel(errorText);
@@ -40,6 +40,7 @@ public class ErrorDialog extends JDialog {
                 dispose();
             }
         });
+        close.setAlignmentX(0.5f);
         add(close);
         
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);

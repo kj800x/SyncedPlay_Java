@@ -10,18 +10,18 @@ import com.coolkev.syncedplay.action.Action;
  *
  * @author kevin
  */
-public class StopSoundAction extends Action {
+public class LoopSoundAction extends Action {
     
     private final String key;
     
-    public StopSoundAction(String key){
+    public LoopSoundAction(String key){
         super();
         this.key = key;
     }
     
     @Override
     public String toString() {
-        return "stop " + key;
+        return "loop " + key;
     }
 
     @Override

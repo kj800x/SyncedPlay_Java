@@ -51,7 +51,7 @@ public class NewCueDialog extends JDialog {
         initUI(cues, parent);
     }
 
-    private final void initUI(ArrayList<Cue> cues, final Component parent) {
+    private void initUI(ArrayList<Cue> cues, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -135,7 +135,6 @@ public class NewCueDialog extends JDialog {
             }
         });
         buttonsPanel.add(approveOption);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
         
 

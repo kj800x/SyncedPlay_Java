@@ -6,6 +6,8 @@ package com.coolkev.syncedplay.util;
 
 import com.coolkev.syncedplay.action.Action;
 import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
+import com.coolkev.syncedplay.action.soundaction.LoopSoundAction;
+import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
 import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
 import java.util.ArrayList;
 
@@ -28,6 +30,16 @@ public class ActionsTextParser {
                 //Format: [play, KEYWORD]
                 if (words.length == 2) { 
                     return new PlaySoundAction(words[1]);
+                } else {
+                    throw new ParserException();
+                }
+            case "panic":
+                //Format: [panic]
+                return new PanicSoundAction();
+            case "loop":
+                //Format: [loop, KEYWORD]
+                if (words.length == 2) { 
+                    return new LoopSoundAction(words[1]);
                 } else {
                     throw new ParserException();
                 }

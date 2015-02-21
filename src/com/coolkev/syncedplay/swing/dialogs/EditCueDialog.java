@@ -34,7 +34,7 @@ public class EditCueDialog extends JDialog {
         initUI(cue, parent);
     }
 
-    private final void initUI(Cue cue, final Component parent) {
+    private void initUI(Cue cue, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -100,7 +100,6 @@ public class EditCueDialog extends JDialog {
             }
         });
         buttonsPanel.add(approveOption);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         add(buttonsPanel);
 
         setModalityType(ModalityType.APPLICATION_MODAL);

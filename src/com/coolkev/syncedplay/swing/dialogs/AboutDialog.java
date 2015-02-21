@@ -24,7 +24,7 @@ public class AboutDialog extends JDialog {
         initUI(name, copy, version, parent);
     }
 
-    private final void initUI(String name, String copy, String version, final Component parent) {
+    private void initUI(String name, String copy, String version, final Component parent) {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         JLabel nameLabel = new JLabel(name);
@@ -52,6 +52,7 @@ public class AboutDialog extends JDialog {
                 dispose();
             }
         });
+        close.setAlignmentX(0.5f);
         add(close);
         
         setModalityType(Dialog.ModalityType.APPLICATION_MODAL);

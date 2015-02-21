@@ -5,6 +5,8 @@
 package com.coolkev.syncedplay.model;
 
 import com.coolkev.syncedplay.action.Action;
+import com.coolkev.syncedplay.action.soundaction.LoopSoundAction;
+import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
 import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
 import com.coolkev.syncedplay.util.IniFormatParser;
@@ -72,6 +74,13 @@ public class SoundTableModel extends AbstractTableModel {
             if (keyToFile.keySet().contains(ssa.getKeyword())){
                 stopSound(ssa.getKeyword());
             }
+        } else if (a instanceof LoopSoundAction){
+            LoopSoundAction lsa = (LoopSoundAction) a;
+            if (keyToFile.keySet().contains(lsa.getKeyword())){
+                loopSound(lsa.getKeyword());
+            }
+        } else if (a instanceof PanicSoundAction){
+            panic();
         }
     }
     
@@ -142,8 +151,15 @@ public class SoundTableModel extends AbstractTableModel {
         }
     }
     
-    //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
+    public void loopSound(final String key) {
+        playSound(key, true);
+    }
+    
     public void playSound(final String key) {
+        playSound(key, false);
+    }
+    //The caller is obligated to make sure that file that it's trying to play has passed (isFileSupported)
+    private void playSound(final String key, final boolean loop) {
         Thread thread = new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.
@@ -168,7 +184,6 @@ public class SoundTableModel extends AbstractTableModel {
                             wait();
                         }
                     }
-
                 }
                 AudioListener listener = new AudioListener();
                 try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(clipFile)) {
@@ -176,7 +191,11 @@ public class SoundTableModel extends AbstractTableModel {
                     clip.addLineListener(listener);
                     clip.open(audioInputStream);
                     try {
-                        clip.start();
+                        if (loop){
+                            clip.loop(Clip.LOOP_CONTINUOUSLY);
+                        } else {
+                            clip.start();
+                        }
                         listener.waitUntilDone();
                     } catch (InterruptedException ex) {
                         //Ok, we're being stopped;
