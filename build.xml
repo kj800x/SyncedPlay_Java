@@ -21,6 +21,12 @@
       <exec dir="src/com/coolkev/syncedplay" executable="dvipdf">
         <arg value="Manual.dvi"/>
       </exec>
+      <move file="src/com/coolkev/syncedplay/Manual.pdf" tofile="dist/Manual.pdf"/>
+      <delete file="src/com/coolkev/syncedplay/Manual.aux"/>
+      <delete file="src/com/coolkev/syncedplay/Manual.dvi"/>
+      <delete file="src/com/coolkev/syncedplay/Manual.log"/>
+      <delete file="src/com/coolkev/syncedplay/Manual.pdf"/>
+      <delete file="src/com/coolkev/syncedplay/Manual.toc"/>
     </target>
     <!--
 

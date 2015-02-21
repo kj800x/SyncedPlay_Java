@@ -23,18 +23,20 @@
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/soundaction/LoopSoundAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/AboutBoxAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/ErrorDialog.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/ManualAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/EditCueDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/SyncedPlay.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/SwapCueDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/todo.txt</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/SaveAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/util/FileCopier.java</file>
-            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/OnlineHelpAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/LoadAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/ConfirmDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/SwapCueAction.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/cueaction/GotoCueAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/ImportSoundAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/SaveAsAction.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/Manual.tex</file>
         </group>
     </open-files>
 </project-private>
