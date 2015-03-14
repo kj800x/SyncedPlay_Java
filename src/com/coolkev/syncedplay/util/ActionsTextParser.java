@@ -10,6 +10,7 @@ import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
 import com.coolkev.syncedplay.action.soundaction.LoopSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
 import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
+import com.coolkev.syncedplay.action.soundaction.VolumeSoundAction;
 import java.util.ArrayList;
 
 
@@ -55,6 +56,13 @@ public class ActionsTextParser {
                 //Format: [stop, KEYWORD]
                 if (words.length == 2) { 
                     return new StopSoundAction(words[1]);
+                } else {
+                    throw new ParserException();
+                }
+            case "volume":
+                //Format: [volume, KEYWORD, VALUE]
+                if (words.length == 3) { 
+                    return new VolumeSoundAction(words[1], Float.parseFloat(words[2]));
                 } else {
                     throw new ParserException();
                 }

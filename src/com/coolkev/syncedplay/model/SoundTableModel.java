@@ -9,6 +9,7 @@ import com.coolkev.syncedplay.action.soundaction.LoopSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
 import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
+import com.coolkev.syncedplay.action.soundaction.VolumeSoundAction;
 import com.coolkev.syncedplay.util.IniFormatParser;
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +20,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
@@ -64,12 +68,18 @@ class SoundRunnable implements Runnable {
     final public AudioListener listener;
     // The wrapper thread is unnecessary, unless it blocks on the
     // Clip finishing; see comments.
-    File clipFile;
+    private final File clipFile;
+    private FloatControl volume;
+
 
     public SoundRunnable(File cf, boolean loop) {
         this.clipFile = cf;
         this.loop = loop;
         this.listener = new AudioListener();
+    }
+    
+    public void setVolume(float v){
+        //volume.setValue(v);
     }
 
     public void kill() {
@@ -87,9 +97,13 @@ class SoundRunnable implements Runnable {
     @Override
     public void run() {
         try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(clipFile)) {
-            clip = AudioSystem.getClip();
+            AudioFormat format = audioInputStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            this.clip = (Clip)AudioSystem.getLine(info);
+            //this.clip = AudioSystem.getClip();
             clip.addLineListener(listener);
             clip.open(audioInputStream);
+            //this.volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             try {
                 if (loop) {
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -134,9 +148,20 @@ public class SoundTableModel extends AbstractTableModel {
     }
 
     public void load(String s, String dir) {
-        Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
-        for (String key : parsedString.keySet()) {
-            learnSound(key, new File(dir + "/" + parsedString.get(key)));
+        if (s.trim().length() > 0){
+            Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
+            for (String key : parsedString.keySet()) {
+                File f = new File(dir + "/" + parsedString.get(key));
+                System.out.println(f.getAbsolutePath());
+                learnSound(key, f);
+            }
+        }
+    }
+    
+    private void setVolume(String key, float v){
+        ArrayList<SoundRunnable> runnableList = keyToRunnable.get(key);
+        for (SoundRunnable r : runnableList) {
+            r.setVolume(v);
         }
     }
 
@@ -155,6 +180,11 @@ public class SoundTableModel extends AbstractTableModel {
             LoopSoundAction lsa = (LoopSoundAction) a;
             if (keyToFile.keySet().contains(lsa.getKeyword())) {
                 loopSound(lsa.getKeyword());
+            }
+        } else if (a instanceof VolumeSoundAction) {
+            VolumeSoundAction vsa = (VolumeSoundAction) a;
+            if (keyToFile.keySet().contains(vsa.getKeyword())) {
+                setVolume(vsa.getKeyword(), vsa.getValue());
             }
         } else if (a instanceof PanicSoundAction) {
             panic();

@@ -11,6 +11,7 @@ import com.coolkev.syncedplay.util.ActionsTextParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -21,6 +22,7 @@ public class CueTableModel extends AbstractTableModel {
     
     private ArrayList<Cue> cues;
     private int nextCue;
+    JTable table;
             
     public CueTableModel(ArrayList<Cue> cues){
         this.cues = cues;
@@ -60,12 +62,14 @@ public class CueTableModel extends AbstractTableModel {
     }
     
     public void load(String s){
-        Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
-        ArrayList<Cue> newCues = new ArrayList<>();
-        for (String key : parsedString.keySet()){
-            newCues.add(new Cue(key, ActionsTextParser.parseText(parsedString.get(key))));
+        if (s.trim().length() > 0){
+            Map<String, String> parsedString = IniFormatParser.parseIniFormat(s);
+            ArrayList<Cue> newCues = new ArrayList<>();
+            for (String key : parsedString.keySet()){
+                newCues.add(new Cue(key, ActionsTextParser.parseText(parsedString.get(key))));
+            }
+            setCues(newCues);
         }
-        setCues(newCues);
     }
     
     @Override
@@ -89,6 +93,7 @@ public class CueTableModel extends AbstractTableModel {
     public void setNextCueIndex(int next){
         nextCue = next - 1;
         fireTableDataChanged();
+        table.scrollRectToVisible(table.getCellRect(nextCue, 0, true));
     }
     @Override
     public int getRowCount() { return getCues().size(); }
@@ -157,5 +162,9 @@ public class CueTableModel extends AbstractTableModel {
     public void moveCue(int startIndex, int endIndex){
         System.out.println("Moving from: "+ startIndex);
         System.out.println("To: "+ endIndex);
+    }
+
+    public void setTable(JTable cuesTable) {
+        this.table = cuesTable;
     }
 }

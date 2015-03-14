@@ -1,0 +1,2 @@
+Made it so that the cues table doesn't scroll out of the view when
+you go to the next cue

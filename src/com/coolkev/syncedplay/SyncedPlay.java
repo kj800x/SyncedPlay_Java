@@ -4,6 +4,8 @@
  */
 package com.coolkev.syncedplay;
 
+import static com.coolkev.syncedplay.SyncedPlay.overwriteToFile;
+import com.coolkev.syncedplay.swing.tasks.SaveTask;
 import com.coolkev.syncedplay.model.CueTableModel;
 import com.coolkev.syncedplay.model.Cue;
 import com.coolkev.syncedplay.model.SoundTableModel;
@@ -23,6 +25,7 @@ import com.coolkev.syncedplay.util.ActionsTextParser;
 import com.coolkev.syncedplay.swing.dialogs.ErrorDialog;
 import com.coolkev.syncedplay.swing.dialogs.EditCueDialog;
 import com.coolkev.syncedplay.swing.dialogs.ConfirmDialog;
+import com.coolkev.syncedplay.swing.dialogs.ProgressDialog;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -32,6 +35,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +45,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -53,7 +61,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -71,7 +81,7 @@ public class SyncedPlay extends JFrame {
     private JTable soundsTable;
     private JPopupMenu cuesTablePMenu;
     private JPopupMenu soundsTablePMenu;
-
+    
     public SyncedPlay() {
         this.cueTableModel = new CueTableModel();
         this.soundTableModel = new SoundTableModel();
@@ -104,11 +114,13 @@ public class SyncedPlay extends JFrame {
     static final String loadFromFile(File file){
         try {
             return new Scanner(file).useDelimiter("\\Z").next();
-        } catch (FileNotFoundException ex) {}
+        } catch (FileNotFoundException | NoSuchElementException ex) {
+        }
         return "";
     }
     
     final void loadFromDirectory(String projectFilePath) {
+        
         File projectFile = new File(projectFilePath);
         String projectName = projectFile.getName().replace(".sync", "");
         String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
@@ -141,41 +153,21 @@ public class SyncedPlay extends JFrame {
         currentSaveDirectory.append(projectFile.getAbsolutePath());
     }
     
-    final static String makeProjectFileContents(){
+    public final String makeProjectFileContents(){
         return "This file is a placeholder file. It means nothing.";
     }
 
     final void saveToDirectory(String projectFilePath) {
-        File projectFile = new File(projectFilePath);
-        String projectName = projectFile.getName().replace(".sync", "");
-        String projectDataDirPath = projectFile.getParentFile() + "/" + projectName + "_Data";
-        File projectDataDir = new File(projectDataDirPath);
-        System.out.println("Saving to :" + projectFile);
-        //Create project file;
-        overwriteToFile(projectFile, makeProjectFileContents());
-        //Make sure the directory exists, or create it if it doesn't
-        if (!projectDataDir.exists()) {
-            if (projectDataDir.mkdir()) {
-                System.out.println("Directory Created");
-            } else {
-                System.out.println("Failed to create directory");
-                throw new Error("Couldn't create directory");
-            }
-        }
-        //Create Cues File
-        File cuesF = new File(projectDataDir.getAbsolutePath() + "/cues.txt");
-        overwriteToFile(cuesF, cueTableModel.save());
-        //Create Sounds File
-        File soundsF = new File(projectDataDir.getAbsolutePath() + "/sounds.txt");
-        overwriteToFile(soundsF, soundTableModel.save());
-        //Copy all sounds to the new directory
-        File[] files = soundTableModel.getFiles();
-        for (File file : files){
-            FileCopier.copyFile(file, new File(projectDataDir.getAbsolutePath() + "/" + file.getName()));
-        }
-        //Update the current loaded file
+        
+        ProgressMonitor progressMonitor = new ProgressMonitor(null,
+                "Saving",
+                "", 0, 2+soundTableModel.getRowCount());
+        progressMonitor.setProgress(0);
+        SaveTask task = new SaveTask(projectFilePath, this, cueTableModel, soundTableModel, progressMonitor);
+        task.execute();
+        
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
-        currentSaveDirectory.append(projectFile.getAbsolutePath());
+        currentSaveDirectory.append(new File(projectFilePath).getAbsolutePath());
     }
 
     final void makeMenuBar() {
@@ -377,6 +369,7 @@ public class SyncedPlay extends JFrame {
         cuesTable = new JTable(cueTableModel);
         cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
         cuesTable.getColumnModel().getColumn(1).setMaxWidth(20);
+        cueTableModel.setTable(cuesTable);
         cuesPane.getViewport().add(cuesTable);
         basic.add(cuesPane);
 
@@ -511,7 +504,7 @@ public class SyncedPlay extends JFrame {
         });
     }
 
-    final static void overwriteToFile(File f, String s) {
+    public final static void overwriteToFile(File f, String s) {
         Writer writer = null;
         try {
             writer = new BufferedWriter(new OutputStreamWriter(

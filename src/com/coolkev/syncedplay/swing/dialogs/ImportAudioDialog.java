@@ -26,6 +26,9 @@ public class ImportAudioDialog extends JDialog {
     
     public static int CANCEL_OPTION = 0;
     public static int APPROVE_OPTION = 1;
+    
+    static File LastFile = new File(System.getProperty("user.home"));
+    
     private int closeState = 0;
     
     private File selectedFile;
@@ -57,7 +60,7 @@ public class ImportAudioDialog extends JDialog {
         fileSelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                JFileChooser fileChooser = new JFileChooser();
+                JFileChooser fileChooser = new JFileChooser(LastFile);
                 FileFilter WAVaudioFilter = new FileNameExtensionFilter("WAV Audio Files", "wav");
                 FileFilter AUaudioFilter = new FileNameExtensionFilter("AU Audio Files", "au");
                 fileChooser.setFileFilter(AUaudioFilter);
@@ -65,6 +68,7 @@ public class ImportAudioDialog extends JDialog {
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                   File file = fileChooser.getSelectedFile();
+                  LastFile = file;
                   if (SoundTableModel.isFileSupported(file)){
                     selectedFile = file;
                     fileNameLabel.setText(file.getName());

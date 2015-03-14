@@ -12,6 +12,56 @@
     <import file="nbproject/build-impl.xml"/>
     
     <target name="-post-jar">
+      <antcall target="build-doc">
+      </antcall>
+      <delete file="dist/README.TXT"/>
+    </target>
+    
+    <target name="dist">
+      <property file="ftp_access.properties" />
+      <antcall target="clean">
+      </antcall>
+      <antcall target="compile">
+      </antcall>
+      <antcall target="jar">
+      </antcall>
+      <copy file="res/build/index.php" tofile="dist/index.php"/>
+      <input
+        message="What version is this?"
+        addproperty="version"
+      />
+      <echo message="${version}"/>
+      <antcall target="-copy-changelog">
+        <param name="version" value="${version}"/>
+      </antcall>
+      <ftp action="mkdir"
+        server="${ftp-server}"
+        userid="${ftp-username}"
+        password="${ftp-password}"
+        remotedir="/www/SyncedPlay/Downloads/Versions/${version}/"/>
+      <ftp server="${ftp-server}"
+        port="21"
+        remotedir="/www/SyncedPlay/Downloads/Versions/${version}/"
+        userid="${ftp-username}"
+        password="${ftp-password}"
+        passive="yes">
+        <fileset dir="dist">
+          <include name="*.*"/>
+        </fileset>
+      </ftp>
+      <ftp server="${ftp-server}"
+        port="21"
+        remotedir="/www/SyncedPlay/Downloads/Versions/_LATEST/"
+        userid="${ftp-username}"
+        password="${ftp-password}"
+        passive="yes">
+        <fileset dir="dist">
+          <include name="*.*"/>
+        </fileset>
+      </ftp>
+    </target>
+    
+    <target name="build-doc">
       <exec dir="src/com/coolkev/syncedplay" executable="latex">
         <arg value="Manual.tex"/>
       </exec>
@@ -27,6 +77,12 @@
       <delete file="src/com/coolkev/syncedplay/Manual.log"/>
       <delete file="src/com/coolkev/syncedplay/Manual.pdf"/>
       <delete file="src/com/coolkev/syncedplay/Manual.toc"/>
+    </target>
+    
+    <target name="-copy-changelog">
+      <copy file="src/com/coolkev/syncedplay/changelog.txt" tofile="dist/changelog.txt"/>
+      <move file="src/com/coolkev/syncedplay/changelog.txt" tofile="oldChangelogs/changelog_${version}.txt" />
+      <touch file="src/com/coolkev/syncedplay/changelog.txt"/>
     </target>
     <!--
 
