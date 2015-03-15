@@ -35,6 +35,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
@@ -56,6 +58,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -68,7 +71,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class SyncedPlay extends JFrame {
+public class SyncedPlay extends JFrame implements WindowListener {
 
     private final CueTableModel cueTableModel;
     private final SoundTableModel soundTableModel;
@@ -81,11 +84,26 @@ public class SyncedPlay extends JFrame {
     private JTable soundsTable;
     private JPopupMenu cuesTablePMenu;
     private JPopupMenu soundsTablePMenu;
+    private boolean unsavedChanges = false;
     
     public SyncedPlay() {
         this.cueTableModel = new CueTableModel();
         this.soundTableModel = new SoundTableModel();
         initUI();
+        addWindowListener( this );
+        soundTableModel.addStructureChangeListener(new Callback(){
+            @Override
+            public void run() {
+                setUnsavedChanges(true);
+            }
+        });
+        
+        cueTableModel.addStructureChangeListener(new Callback(){
+            @Override
+            public void run() {
+                setUnsavedChanges(true);
+            }
+        });
     }
 
     final void setLaF() {
@@ -111,6 +129,37 @@ public class SyncedPlay extends JFrame {
         }
     }
 
+    private void setUnsavedChanges(boolean state){
+        unsavedChanges = state;
+        updateWindowTitle();
+    }
+    
+    private void updateWindowTitle(){
+        StringBuilder newTitle = new StringBuilder();
+        if (!currentSaveDirectory.toString().isEmpty()){
+            if (unsavedChanges){
+                newTitle.append("*");
+            }
+            
+            String fileName = new File(currentSaveDirectory.toString()).getName();
+            fileName = fileName.substring(0, fileName.lastIndexOf("."));
+
+            newTitle.append(fileName);
+            if (unsavedChanges){
+                newTitle.append("*");
+            } 
+            newTitle.append(" - ");
+        } else { 
+            if (unsavedChanges){
+                newTitle.append("*");
+            }
+        }
+        newTitle.append("Synced Play");
+        
+        
+        setTitle(newTitle.toString());
+    }
+    
     static final String loadFromFile(File file){
         try {
             return new Scanner(file).useDelimiter("\\Z").next();
@@ -151,6 +200,7 @@ public class SyncedPlay extends JFrame {
         }
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
         currentSaveDirectory.append(projectFile.getAbsolutePath());
+        setUnsavedChanges(false);
     }
     
     public final String makeProjectFileContents(){
@@ -168,6 +218,7 @@ public class SyncedPlay extends JFrame {
         
         currentSaveDirectory.delete(0, currentSaveDirectory.length());
         currentSaveDirectory.append(new File(projectFilePath).getAbsolutePath());
+        setUnsavedChanges(false);
     }
 
     final void makeMenuBar() {
@@ -351,7 +402,8 @@ public class SyncedPlay extends JFrame {
         add(basic);
 
         basic.add(Box.createVerticalGlue());
-
+        
+        
         JScrollPane soundsPane = new JScrollPane();
         //soundTableModel.setSounds(cues);
         soundsTable = new JTable(soundTableModel);
@@ -370,6 +422,8 @@ public class SyncedPlay extends JFrame {
         cuesTable.getColumnModel().getColumn(0).setMaxWidth(35);
         cuesTable.getColumnModel().getColumn(1).setMaxWidth(20);
         cueTableModel.setTable(cuesTable);
+        cuesTable.setFocusable(true);
+        cuesTable.setRowSelectionAllowed(false);
         cuesPane.getViewport().add(cuesTable);
         basic.add(cuesPane);
 
@@ -490,7 +544,7 @@ public class SyncedPlay extends JFrame {
 
         setTitle("Synced Play");
         setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
     }
 
@@ -520,4 +574,36 @@ public class SyncedPlay extends JFrame {
         }
 
     }
+
+    @Override
+    public void windowOpened(WindowEvent e) { }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if (unsavedChanges){
+            int result = JOptionPane.showConfirmDialog(this, "You have unsaved changes. Are you sure you want to quit?","Unsaved Changes", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if(result == JOptionPane.YES_OPTION){
+                       System.exit(0);
+            } else {
+                //Do nothing; don't close
+            }
+        } else {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) { }
+
+    @Override
+    public void windowIconified(WindowEvent e) { }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) { }
+
+    @Override
+    public void windowActivated(WindowEvent e) { }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) { }
 }

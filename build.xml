@@ -15,6 +15,7 @@
       <antcall target="build-doc">
       </antcall>
       <delete file="dist/README.TXT"/>
+      <chmod file="dist/SyncedPlay.jar" perm="ugo+rx"/>
     </target>
     
     <target name="dist">

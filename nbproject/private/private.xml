@@ -6,6 +6,7 @@
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/model/Cue.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/MoveCueAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/AboutDialog.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/changelog.txt</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/NewCueAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/util/IniFormatParser.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/soundaction/PanicSoundAction.java</file>
@@ -17,9 +18,11 @@
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/soundaction/StopSoundAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/NewCueDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/util/Callback.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/res/build/index.php</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/util/ActionsTextParser.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/KevinBaseAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/tasks/SaveTask.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/.gitignore</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/QuitAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/soundaction/PlaySoundAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/action/soundaction/LoopSoundAction.java</file>
@@ -28,6 +31,7 @@
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/ErrorDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/ManualAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/EditCueDialog.java</file>
+            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/ftp_access.properties</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/SyncedPlay.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/dialogs/SwapCueDialog.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/todo.txt</file>
@@ -40,7 +44,6 @@
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/ImportSoundAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/swing/action/SaveAsAction.java</file>
             <file>file:/home/kevin/NetBeansProjects/SyncedPlay/src/com/coolkev/syncedplay/Manual.tex</file>
-            <file>file:/home/kevin/NetBeansProjects/SyncedPlay/nbproject/build-impl.xml</file>
         </group>
     </open-files>
 </project-private>

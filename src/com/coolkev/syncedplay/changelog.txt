@@ -1,2 +1,3 @@
-Made it so that the cues table doesn't scroll out of the view when
-you go to the next cue
+Program alerts the user when you try to close it with unsaved changes.
+Program title follows along with the filename of the current save file, and the save state.
+Cue table now stays centered.

@@ -10,6 +10,7 @@ import com.coolkev.syncedplay.action.soundaction.PanicSoundAction;
 import com.coolkev.syncedplay.action.soundaction.PlaySoundAction;
 import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
 import com.coolkev.syncedplay.action.soundaction.VolumeSoundAction;
+import com.coolkev.syncedplay.util.Callback;
 import com.coolkev.syncedplay.util.IniFormatParser;
 import java.io.File;
 import java.io.IOException;
@@ -126,17 +127,19 @@ class SoundRunnable implements Runnable {
 public class SoundTableModel extends AbstractTableModel {
 
     TreeMap<String, File> keyToFile = new TreeMap();
-
     TreeMap<String, ArrayList<SoundRunnable>> keyToRunnable = new TreeMap();
+    private final ArrayList<Callback> changeCallbacks;
 
     public SoundTableModel() {
         super();
+        this.changeCallbacks = new ArrayList();
     }
 
     public void learnSound(String key, File file) {
         keyToFile.put(key, file);
         keyToRunnable.put(key, new ArrayList<SoundRunnable>());
         fireTableDataChanged();
+        callCallbacks();
     }
 
     public void blank() {
@@ -145,6 +148,7 @@ public class SoundTableModel extends AbstractTableModel {
         keyToFile = new TreeMap();
         keyToRunnable = new TreeMap();
         fireTableDataChanged();
+        callCallbacks();
     }
 
     public void load(String s, String dir) {
@@ -304,6 +308,16 @@ public class SoundTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int row, int col) {
         return false;
+    }
+    
+    private void callCallbacks(){
+        for (Callback c: changeCallbacks){
+            c.run();
+        }
+    }
+    
+    public void addStructureChangeListener(Callback c) {
+        changeCallbacks.add(c);
     }
 
 }
