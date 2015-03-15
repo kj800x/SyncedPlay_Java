@@ -20,5 +20,9 @@ $dirname = basename(getcwd());
       }
     }
     ?>
+  <pre style="border: 1px solid black; margin-left: 10px"><?php
+      $changelog = file_get_contents("./changelog.txt");
+      echo htmlspecialchars($changelog);
+    ?></pre>
   </body>
 </html>
