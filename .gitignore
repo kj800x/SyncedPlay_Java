@@ -7,3 +7,6 @@
 /src/com/coolkev/syncedplay/Manual.dvi
 /ftp_access.properties
 /oldChangelogs/
+/out/
+**/.idea/workspace.xml
+**/.idea/tasks.xml

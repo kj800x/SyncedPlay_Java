@@ -13,8 +13,6 @@ import com.coolkev.syncedplay.action.soundaction.StopSoundAction;
 import com.coolkev.syncedplay.action.soundaction.VolumeSoundAction;
 import java.util.ArrayList;
 
-
-
 /**
  *
  * @author kevin
